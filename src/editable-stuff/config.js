@@ -16,17 +16,9 @@ const mainBody = {
       url: "https://github.com/Ngoson2004",
     },
     {
-      image: "fa-facebook",
-      url: "https://www.facebook.com/chinhhieu.son.9/",
-    },
-    {
-      image: "fa-instagram",
-      url: "https://www.instagram.com/_honeybutterbread_/",
-    },
-    {
       image: "fa-linkedin",
       url: "https://www.linkedin.com/in/son-ngo-2272b3215/",
-    },
+    }
   ],
 };
 
@@ -48,7 +40,7 @@ const about = {
   show: true,
   heading: "About Me",
   imageLink: require("../editable-stuff/avatar.jpg"),
-  imageSize: 300,
+  imageSize: 400,
   message:
     "My name is The Son Ngo, or Son for short. I am studying Bachelor of Computer Science (Professional Degree) at Swinburne University of Technology, Melbourne, Australia. I am a passionate software developers, with a strong interest in web development, ICT services, and machine learning. I would love to contribute my skillset to a company that is making a positive impact on the world. Please feel free to reach out to me!",
   resume: require("../editable-stuff/resume.pdf"),
@@ -63,7 +55,7 @@ const repos = {
   show: true,
   heading: "Recent Projects",
   gitHubUsername: "Ngoson2004", //i.e."johnDoe12Gh"
-  reposLength: 6,
+  reposLength: 0,
   specificRepos: ["Personal_Portfolio", "SWE30003_Restaurant-Information-System", "COS30049-Computing_Technology_Innovation_Project", "Deep-Learning-for-Vietnamese", "Vector-search_Engine", "COS30019-Intro-to-AI"],
 };
 
@@ -97,17 +89,17 @@ const skills = {
   heading: "Skills",
   hardSkills: [
     { name: "Python", value: 90 },
-    { name: "SQL", value: 90 },
+    { name: "MySQL", value: 90 },
+    { name: "NoSQL", value: 80 },
     { name: "C/C++", value: 70 },
     { name: "JavaScript/TypeScript", value: 80 },
     { name: "React", value: 90 },
     { name: "TailwindCSS", value: 90 },
-    { name: "ASP.NET", value: 75 },
+    { name: "ASP.NET", value: 80 },
     { name: "AWS Cloud", value: 85 },
-    { name: "PyTorch", value: 85 },
-    { name: "TensorFlow", value: 85},
-    { name: "NumPy", value: 90 },
-    { name: "Pandas", value: 90 },
+    { name: "ML frameworks (PyTorch, TF, Scikit-learn)", value: 85 },
+    { name: "Data Engineer (NumPy, Pandas)", value: 90 },
+    { name: "Office 365 Suite", value: 100 },
   ],
   softSkills: [
     { name: "Self-learning", value: 90 },
@@ -117,7 +109,7 @@ const skills = {
     { name: "Problem Solving", value: 90 },
     { name: "Team Collaboration", value: 95 },
     { name: "Interpersonal Communication", value: 95 },
-    { name: "Customer Service", value: 90 },
+    { name: "Customer Service", value: 95 },
   ],
 };
 
@@ -126,24 +118,34 @@ const getInTouch = {
   show: true,
   heading: "Get In Touch",
   message:
-    "I'm currently looking for full-time IT Support, Software Engineering or Machine Learning opportunities! If you know of any positions available, if you have any questions, or if you just want to say hi, please feel free to email me at",
+    "I am looking for full time work placement in software engineering, AI & machine learning, data science, cyber security, IT system, and related areas! If you know of any positions available, have any questions, or if you just want to say hi, please feel free to email me at",
   email: "theson2004@outlook.com",
 };
 
 const experiences = {
-  show: false,
+  show: true,
   heading: "Experiences",
   data: [
     {
-      role: "Software Engineer", // Here Add Company Name
-      companylogo: require("../assets/img/dell.png"),
-      date: "June 2018 – Present",
+      role: "Machine Learning Summer Intern", // Here Add Company Name
+      companylogo: require("../assets/img/aetosky.png"),
+      date: "Nov 2023 – Mar 2024",
     },
     {
-      role: "Front-End Developer",
-      companylogo: require("../assets/img/boeing.png"),
-      date: "May 2017 – May 2018",
+      role: "LLM and Software Engineering Intern",
+      companylogo: require("../assets/img/kois_ai.jpg"),
+      date: "June 2024 – Sep 2024",
     },
+    {
+      role: "Remote AI Engineer Intern",
+      companylogo: require("../assets/img/fpt.png"),
+      date: "Jul 2024 – Dec 2024",
+    },
+    {
+      role: "Casual Bar Attendant",
+      companylogo: require("../assets/img/delaware.jpg"),
+      date: "Mar 2023 – Present",
+    }
   ],
 };
 
@@ -156,9 +158,9 @@ export {
   navBar,
   mainBody,
   about,
+  experiences,
   repos,
   skills,
   leadership,
   getInTouch,
-  experiences,
 };
