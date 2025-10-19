@@ -109,7 +109,7 @@ const skills = {
       value: 100,
     },
     { name: "Data Visualization (Matplotlib, Seaborn)", value: 95 },
-    { name: "Computer Vision (OpenCV, PIL)", value: 9 },
+    { name: "Computer Vision (OpenCV, PIL)", value: 95 },
     { name: "Cheminformatics (RDKit, Chemprop)", value: 95 },
     {
       name: "Deep learning methods (CNNs, GNNs, Transformers)",
