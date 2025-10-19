@@ -10,7 +10,7 @@ const mainBody = {
   middleName: "",
   lastName: "Ngo",
   message:
-    "On the journey to become a future expert in Artificial Intelligences",
+    "Turning data into discovery — and ideas into impact.",
   icons: [
     {
       image: "fa-github",
@@ -44,10 +44,9 @@ const about = {
   imageSize: 400,
   message:
     "My name is Son Ngo. I am a machine learning researcher trainee in Manufacturing department of CSIRO Clayton, Melbourne. \
-    My work focus on AI for early-stage drug discovery, developing machine learning models for predictive analysis of molecules. \
-    Besides working fulltime, I am studying Bachelor of Computer Science (Professional Degree) at Swinburne University of Technology, Hawthorn campus. \
-    I am seeking for PhD opportunities in the fields of Machine Learning, Cheminformatics, Robotics, and related areas. \
-    Looking forward to connecting with professionals and researchers in these domains!",
+    My work focus on AI for early-stage drug discovery, building model for molecular predictive analysis. \
+    Besides working fulltime, I am studying Bachelor of Computer Science at Swinburne University of Technology. \
+    Looking forward to connect with professionals and researchers in various AI/ML domains!",
   resume: require("../editable-stuff/SonNgo_PhDResume_NickSupervisors.pdf"),
 };
 
@@ -147,6 +146,11 @@ const experiences = {
       role: "Machine Learning Researcher - CSIRO", // Here Add Company Name
       companylogo: require("../assets/img/csiro.png"),
       date: "Feb 2025 – Present",
+    },
+    {
+      role: "Student - Swinburne University of Technology", // Here Add Company Name
+      companylogo: require("../assets/img/swin.png"),
+      date: "Aug 2022 – Present",
     },
     {
       role: "Remote AI Engineer Intern - FPT Software Hanoi", // Here Add Company Name
