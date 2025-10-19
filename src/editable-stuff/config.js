@@ -9,8 +9,7 @@ const mainBody = {
   firstName: "Son",
   middleName: "",
   lastName: "Ngo",
-  message:
-    "Turning data into discovery — and ideas into impact.",
+  message: "Turning data into discovery — and ideas into impact.",
   icons: [
     {
       image: "fa-github",
@@ -143,22 +142,22 @@ const experiences = {
   heading: "Experiences",
   data: [
     {
-      role: "Machine Learning Researcher - CSIRO", // Here Add Company Name
+      role: "ML Researcher Trainee - CSIRO", // Here Add Company Name
       companylogo: require("../assets/img/csiro.png"),
       date: "Feb 2025 – Present",
     },
+    // {
+    //   role: "Student - Swinburne University of Technology", // Here Add Company Name
+    //   companylogo: require("../assets/img/swin.png"),
+    //   date: "Aug 2022 – Present",
+    // },
     {
-      role: "Student - Swinburne University of Technology", // Here Add Company Name
-      companylogo: require("../assets/img/swin.png"),
-      date: "Aug 2022 – Present",
-    },
-    {
-      role: "Remote AI Engineer Intern - FPT Software Hanoi", // Here Add Company Name
+      role: "AI Engineer Intern - FPT AI Center", // Here Add Company Name
       companylogo: require("../assets/img/fpt.png"),
       date: "Jul 2024 – Jan 2025",
     },
     {
-      role: "Machine Learning Intern - Aetosky", // Here Add Company Name
+      role: "Computer Vision AI Intern - Aetosky", // Here Add Company Name
       companylogo: require("../assets/img/aetosky.png"),
       date: "Nov 2023 – Mar 2024",
     },
