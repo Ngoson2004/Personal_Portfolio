@@ -46,7 +46,7 @@ const about = {
     My work focus on AI for early-stage drug discovery, building model for molecular predictive analysis. \
     Besides working fulltime, I am studying Bachelor of Computer Science at Swinburne University of Technology. \
     Looking forward to connect with professionals and researchers in various AI/ML domains!",
-  resume: require("../editable-stuff/SonNgo_PhDResume_NickSupervisors.pdf"),
+  resume: require("../editable-stuff/SonNgo_Resume_DSAI.pdf"),
 };
 
 // PROJECTS SECTION
