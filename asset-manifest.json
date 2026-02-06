@@ -1,20 +1,20 @@
 {
   "files": {
     "main.css": "/static/css/main.a5a525c0.css",
-    "main.js": "/static/js/main.994e4810.js",
+    "main.js": "/static/js/main.0d99cfb1.js",
     "static/js/453.9b1a9f3d.chunk.js": "/static/js/453.9b1a9f3d.chunk.js",
-    "static/media/SonNgo_Resume_DSAI.pdf": "/static/media/SonNgo_Resume_DSAI.63b00da04745cdc35777.pdf",
+    "static/media/SonNgo_Resume_DSAI.pdf": "/static/media/SonNgo_Resume_DSAI.bcfacba6c6ce4d1cd189.pdf",
     "static/media/avatar.jpg": "/static/media/avatar.92d59192c7702801f117.jpg",
     "static/media/csiro.png": "/static/media/csiro.34e23323a21afb6f9d13.png",
     "static/media/fpt.png": "/static/media/fpt.757a782f6c085214dc38.png",
     "static/media/aetosky.png": "/static/media/aetosky.72c112a4810ba2c2439d.png",
     "index.html": "/index.html",
     "main.a5a525c0.css.map": "/static/css/main.a5a525c0.css.map",
-    "main.994e4810.js.map": "/static/js/main.994e4810.js.map",
+    "main.0d99cfb1.js.map": "/static/js/main.0d99cfb1.js.map",
     "453.9b1a9f3d.chunk.js.map": "/static/js/453.9b1a9f3d.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.a5a525c0.css",
-    "static/js/main.994e4810.js"
+    "static/js/main.0d99cfb1.js"
   ]
 }
