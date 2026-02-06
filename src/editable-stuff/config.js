@@ -42,10 +42,9 @@ const about = {
   imageLink: require("../editable-stuff/avatar.jpg"),
   imageSize: 400,
   message:
-    "My name is Son Ngo. I am a machine learning researcher trainee in Manufacturing department of CSIRO Clayton, Melbourne. \
-    My work focus on AI for early-stage drug discovery, building model for molecular predictive analysis. \
-    Besides working fulltime, I am studying Bachelor of Computer Science at Swinburne University of Technology. \
-    Looking forward to connect with professionals and researchers in various AI/ML domains!",
+    "My name is Son Ngo. I help organisations build websites and software products using the latest technologies on the market, \
+    such as LLM and RAG systems. With skillsets in full-stack and agile development, combined with AI/ML and data science expertise, \
+    I can integrate AI into your business workflows and enhance user experience for your products.",
   resume: require("../editable-stuff/SonNgo_Resume_DSAI.pdf"),
 };
 
