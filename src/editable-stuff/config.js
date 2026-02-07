@@ -64,7 +64,7 @@ const repos = {
     "COS30049-Computing_Technology_Innovation_Project",
     "Deep-Learning-for-Vietnamese",
     "Vector-search_Engine",
-    "COS30019-Intro-to-AI",
+    "OpenADMET-ExpansionRX-Challenge",
   ],
 };
 
