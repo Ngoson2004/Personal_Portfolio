@@ -45,7 +45,7 @@ const about = {
     "My name is Son Ngo. I help organisations build websites and software products using the latest technologies on the market, \
     such as LLM and RAG systems. With skillsets in full-stack and agile development, combined with AI/ML and data science expertise, \
     I can integrate AI into your business workflows and enhance user experience for your products.",
-  resume: require("../editable-stuff/SonNgo_Resume_DSAI.pdf"),
+  resume: require("../editable-stuff/SonNgo_Resume_SWE.pdf"),
 };
 
 // PROJECTS SECTION
