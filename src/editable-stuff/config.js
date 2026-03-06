@@ -45,7 +45,7 @@ const about = {
     "My name is Son Ngo. I help organisations build websites and software products using the latest technologies on the market, \
     such as LLM and RAG systems. With skillsets in full-stack and agile development, combined with AI/ML and data science expertise, \
     I can integrate AI into your business workflows and enhance user experience for your products.",
-  resume: require("../editable-stuff/SonNgo_Resume_SWE.pdf"),
+  resume: require("../editable-stuff/SonNgo_Resume_DSAI.pdf"),
 };
 
 // PROJECTS SECTION
@@ -130,9 +130,7 @@ const skills = {
 const getInTouch = {
   show: true,
   heading: "Get In Touch",
-  message:
-    "I am seeking for PhD opportunities in the fields of Machine Learning, Cheminformatics, Robotics, and related areas. \
-    If you are working in academia and need a student lending a helping hand in your research projects, please feel free to contact me at",
+  message: "Please feel free to contact me at",
   email: "theson2004@outlook.com",
 };
 
@@ -141,9 +139,9 @@ const experiences = {
   heading: "Experiences",
   data: [
     {
-      role: "ML Researcher Trainee - CSIRO", // Here Add Company Name
+      role: "Machine Learning Specialist - CSIRO", // Here Add Company Name
       companylogo: require("../assets/img/csiro.png"),
-      date: "Feb 2025 – Present",
+      date: "Feb 2025 – Feb 2026",
     },
     // {
     //   role: "Student - Swinburne University of Technology", // Here Add Company Name
@@ -151,9 +149,19 @@ const experiences = {
     //   date: "Aug 2022 – Present",
     // },
     {
+      role: "Founding Full-stack Developer - Unibuz", // Here Add Company Name
+      companylogo: require("../assets/img/unibuz.jpeg"),
+      date: "Jul 2024 – Jan 2025",
+    },
+    {
       role: "AI Engineer Intern - FPT AI Center", // Here Add Company Name
       companylogo: require("../assets/img/fpt.png"),
       date: "Jul 2024 – Jan 2025",
+    },
+    {
+      role: "NLP AI Engineer Intern - Kois AI", // Here Add Company Name
+      companylogo: require("../assets/img/kois_ai.jpg"),
+      date: "Jun 2024 – Sept 2024",
     },
     {
       role: "Computer Vision AI Intern - Aetosky", // Here Add Company Name
