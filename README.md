@@ -1,4 +1,4 @@
-# ngoson2004.github.io
+# sonngo.pages.dev
 
 Personal website of Son Ngo, Applied AI Scientist. Built with [Astro](https://astro.build), Tailwind CSS v4 and MDX.
 
@@ -10,7 +10,7 @@ Requires Node 22.23.4 or newer (`nvm use` reads `.nvmrc`).
 npm install
 npm run dev      # http://localhost:4321
 npm run build    # type-check + static build into dist/
-npm run deploy   # build, then publish dist/ to Ngoson2004/Ngoson2004.github.io
+npm run deploy   # build, then publish dist/ to Cloudflare Pages (project "sonngo")
 ```
 
 ## Where content lives
@@ -27,3 +27,9 @@ npm run deploy   # build, then publish dist/ to Ngoson2004/Ngoson2004.github.io
 
 Notes with `draft: true` only appear in `npm run dev`. Case studies accept an optional `cover` image
 (path relative to the MDX file) and `coverAlt`.
+
+## Hosting
+
+The site is live at https://sonngo.pages.dev (Cloudflare Pages, project `sonngo`).
+The old address, https://ngoson2004.github.io, is a forwarding page in the
+`Ngoson2004.github.io` repo that sends every path to the same path on the new site.

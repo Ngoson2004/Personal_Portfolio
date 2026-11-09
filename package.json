@@ -13,7 +13,7 @@
     "build": "astro check && astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "deploy": "npm run build && node scripts/deploy.mjs"
+    "deploy": "npm run build && npx wrangler@4 pages deploy dist --project-name sonngo --branch master"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.12",
@@ -32,8 +32,5 @@
     "simple-icons": "^16.37.0",
     "tailwindcss": "^4.3.5",
     "typescript": "^6.0.3"
-  },
-  "devDependencies": {
-    "gh-pages": "^6.3.0"
   }
 }
