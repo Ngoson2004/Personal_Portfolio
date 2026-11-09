@@ -1,0 +1,65 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import WorkCard from "@/components/ui/WorkCard.astro";
+
+const work = (await getCollection("work")).sort((a, b) => a.data.order - b.data.order);
+---
+
+<BaseLayout title="Work" description="Case studies in AI agents, requirements engineering and predictive machine learning.">
+  <section class="wrap pt-[140px] pb-28 md:pt-[180px] md:pb-40" data-view="grid" data-work-index>
+    <div class="grid-12 gap-y-8">
+      <h1 class="display enter col-span-4 max-w-[18ch] md:col-span-8" style="--i:0">
+        Building AI agents and models for safety-critical work
+      </h1>
+    </div>
+    <div class="grid-12 mt-16 items-end gap-y-6">
+      <div class="col-span-4 text-[16px] md:col-span-6" role="group" aria-label="Layout">
+        <button type="button" data-view-btn="grid" aria-pressed="true" class="more flex text-muted aria-pressed:text-fg">
+          <span>Grid</span>
+        </button>
+        <button type="button" data-view-btn="list" aria-pressed="false" class="more flex text-muted aria-pressed:text-fg">
+          <span>List</span>
+        </button>
+      </div>
+      <p class="enter col-span-4 max-w-[40ch] text-[16px] md:col-span-4 md:col-start-7" style="--i:1">
+        Each project answers a specific constraint: a regulation, a dataset, a user who cannot afford a wrong answer.
+      </p>
+    </div>
+
+    <ul class="work-grid mt-10 grid grid-cols-2 gap-x-2 gap-y-10 md:grid-cols-4">
+      {work.map((entry, i) => <li class:list={["reveal", i === 0 && "col-span-2"]}><WorkCard entry={entry} /></li>)}
+    </ul>
+  </section>
+</BaseLayout>
+
+<style>
+  /* List view: one ruled row per project, images hidden. */
+  [data-view="list"] .work-grid {
+    grid-template-columns: 1fr;
+    row-gap: 0;
+    border-top: 1px solid var(--line);
+  }
+  [data-view="list"] .work-grid > li {
+    grid-column: auto;
+  }
+  [data-view="list"] .work-grid :global([data-card-image]) {
+    display: none;
+  }
+  [data-view="list"] .work-grid :global([data-card-body]) {
+    margin-top: 0;
+    border-bottom: 1px solid var(--line);
+    padding-block: 1rem;
+  }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>("[data-work-index]");
+  const buttons = [...document.querySelectorAll<HTMLButtonElement>("[data-view-btn]")];
+  buttons.forEach((btn) =>
+    btn.addEventListener("click", () => {
+      root!.dataset.view = btn.dataset.viewBtn;
+      buttons.forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
+    }),
+  );
+</script>

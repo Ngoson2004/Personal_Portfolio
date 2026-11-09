@@ -1,2 +1,4 @@
-# https://www.robotstxt.org/robotstxt.html
 User-agent: *
+Allow: /
+
+Sitemap: https://sonngo.pages.dev/sitemap-index.xml

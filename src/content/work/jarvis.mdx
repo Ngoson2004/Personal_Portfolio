@@ -1,0 +1,31 @@
+---
+title: Jarvis
+summary: A multimodal assistant that recognises its user, then plans and delegates work through tool-calling agents.
+context: Team project
+year: "2026"
+tag: Multimodal
+order: 5
+metric:
+  value: "0.904"
+  label: ROC-AUC on face verification, vs 0.837 for a ResNet18 baseline
+stack: [PyTorch, FastMCP, FastAPI, Metric learning, Multi-agent systems]
+links:
+  - label: Watch video demo
+    href: https://youtu.be/a-WlsCGX64U
+  - label: Source on GitHub
+    href: https://github.com/Ngoson2004/Face-Recognition-System
+cover: ../../assets/work/jarvis-demo.jpg
+coverAlt: Jarvis demo, a face recognition HUD verifying the user with identity, emotion and liveness scores next to the assistant's chat reply
+---
+
+## Overview
+
+Jarvis is a multimodal assistant built by a five-person team. It recognises who it is talking to, then gives them conversational access to vision tools, scheduling and delegated tasks from a phone.
+
+## My part
+
+**Face verification.** I built a PyTorch Siamese network trained with metric learning and triplet loss. It reached **0.9044 ROC-AUC** across 8,805 validation image pairs, ahead of the ResNet18 classification baseline at 0.8368.
+
+**Enrolment without retraining.** New users register live through a webcam. Their reference images update the identity embeddings, so the recognition model never needs retraining. Anti-spoofing checks guard the enrolment flow.
+
+**The agent core.** I extended the system into an assistant: a supervisor agent that tool-calls sub-agents (a planning agent and a work agent) through a FastMCP loop, served to a FastAPI mobile web interface.

@@ -1,0 +1,44 @@
+---
+import { render } from "astro:content";
+import { Image } from "astro:assets";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { formatDate, getNotes, readingTime } from "@/lib/notes";
+
+export async function getStaticPaths() {
+  const notes = await getNotes();
+  return notes.map((note) => ({ params: { slug: note.id }, props: { note } }));
+}
+
+const { note } = Astro.props;
+const { Content } = await render(note);
+const d = note.data;
+---
+
+<BaseLayout title={d.title} description={d.description} type="article" publishedTime={d.date}>
+  <article class="wrap pt-[140px] pb-28 md:pt-[180px] md:pb-44">
+    <header class="grid-12 gap-y-6">
+      <p class="enter col-span-4 flex flex-wrap items-center gap-3 text-muted md:col-span-6" style="--i:0">
+        <a href="/blog" class="meta link-underline">Blog</a>
+        <time class="meta" datetime={d.date.toISOString()}>{formatDate(d.date)}</time>
+        <span class="meta">~ {readingTime(note.body)} min.</span>
+        {d.tags.map((t) => <span class="tag">{t}</span>)}
+      </p>
+      <h1 class="font-display enter col-span-4 max-w-[22ch] text-[clamp(2.2rem,3.6vw,3.5rem)] font-semibold leading-[1] tracking-[-0.035em] md:col-span-8" style="--i:1">
+        {d.title}
+      </h1>
+      <p class="enter col-span-4 max-w-[44ch] text-[17px] md:col-span-4 md:col-start-7" style="--i:2">{d.description}</p>
+    </header>
+    {
+      d.cover && (
+        <div class="mt-14 overflow-hidden bg-surface">
+          <Image src={d.cover} alt={d.coverAlt ?? ""} widths={[800, 1400, 2000]} sizes="100vw" class="w-full" />
+        </div>
+      )
+    }
+    <div class="grid-12 mt-16 md:mt-24">
+      <div class="prose-site col-span-4 max-w-[64ch] md:col-span-6 md:col-start-7">
+        <Content />
+      </div>
+    </div>
+  </article>
+</BaseLayout>

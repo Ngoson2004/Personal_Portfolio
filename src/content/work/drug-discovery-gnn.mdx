@@ -1,0 +1,49 @@
+---
+title: Graph neural networks for drug discovery
+summary: Multi-task GNNs that predict pharmacokinetic (ADME) properties to speed up drug screening.
+context: CSIRO Manufacturing
+year: "2025"
+tag: Machine learning
+order: 4
+metric:
+  value: Top 13
+  label: of 370+ global participants, macro-averaged RAE 0.588
+stack: [PyTorch, Chemprop, RDKit, SLURM, HPC]
+links:
+  - label: Read the challenge retrospective
+    href: https://openadmet.ghost.io/lessons-learned-from-the-openadmet-expansionrx-blind-challenge/
+  - label: Challenge submission on GitHub
+    href: https://github.com/Ngoson2004/OpenADMET-ExpansionRX-Challenge
+cover: ../../assets/work/openadmet-retrospective.jpg
+coverAlt: OpenADMET blog post "Lessons Learned from the OpenADMET - ExpansionRx Blind Challenge", with radar charts of the top 10 participants per endpoint
+hero: ../../assets/photos/csiro-presenting.jpg
+heroAlt: Son presenting a workflow diagram at CSIRO alongside two supervisors
+gallery:
+  - src: ../../assets/photos/csiro-poster.jpg
+    alt: Son beside a research poster on AI for early drug discovery
+  - src: ../../assets/photos/csiro-team.jpg
+    alt: Son with two CSIRO supervisors outside the CSIRO laboratory
+---
+
+## The problem
+
+Screening drug candidates in the lab is slow and expensive. If a model can predict a molecule's pharmacokinetic properties up front, chemists can spend lab time on the candidates most likely to succeed.
+
+## Approach
+
+At CSIRO I developed and evaluated an AI application that predicts these properties, and entered the approach in the OpenADMET and ExpansionRx blind challenge.
+
+- **Graph representations.** Molecules are featurised as graphs and modelled with Chemprop message-passing networks. I also experimented with adding fingerprint features (Morgan, Avalon, ErG and MACCS).
+- **Multi-task learning.** The model learns all endpoints jointly, supplemented with public datasets (Galapagos' Polaris set and a merged Novartis set of roughly 300K molecules) after chemical curation and SMILES canonicalisation.
+- **Target transforms.** Skewed endpoints are log-transformed, with a logit transform for percentage endpoints.
+- **Ensembling.** Models are trained on five random splits and the submission averages all five checkpoints.
+- **Tuning at scale.** Training and hyperparameter search ran on HPC with SLURM. Hand-picked hyperparameters ended up beating automated Tree-structured Parzen Estimator search.
+
+## Results
+
+- **Top 13** of 370+ global participants.
+- **0.588** macro-averaged relative absolute error.
+
+## Working across disciplines
+
+The work was shared with AI, chemistry and bioengineering teams to judge practical applicability, with findings written up as technical reports for stakeholders.

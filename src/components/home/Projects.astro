@@ -1,0 +1,143 @@
+---
+// Selected projects, after PDA's featured projects. A full-bleed photo opens the
+// section with a centred title; on desktop it pins, then shrinks into the first
+// project's card as you scroll (scripts/scroll.ts). Below that, each row sets its
+// text and image side by side with their tops on one line; images alternate sides
+// and sizes, and each row ends on the headline result.
+import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
+import { boldFigures } from "@/lib/figures";
+import { photos } from "@/data/photos";
+
+const work = (await getCollection("work")).sort((a, b) => a.data.order - b.data.order);
+const band = photos.csiroLab;
+const firstCover = work[0]?.data.cover;
+
+// [image columns, meta columns] for desktop, cycling. Text and image share a top line.
+const layouts = [
+  { img: "md:col-start-7 md:col-span-6", meta: "md:col-start-1 md:col-span-6 md:row-start-1", sizes: "50vw" },
+  { img: "md:col-start-1 md:col-span-5", meta: "md:col-start-7 md:col-span-6", sizes: "42vw" },
+  { img: "md:col-start-9 md:col-span-4", meta: "md:col-start-1 md:col-span-7 md:row-start-1", sizes: "34vw" },
+];
+---
+
+<section aria-labelledby="work-title" data-tone="light" class="relative z-10 bg-bg" data-feature>
+  <!-- The band. Without motion it is a plain photo block; with it, a 200vh track
+       whose first screen pins while the photo shrinks into the first card. -->
+  <div id="work" class="feature-wrap pointer-events-none relative z-[2]" data-feature-wrap>
+    <div class="feature-sticky relative h-[80svh] min-h-[480px]" data-tone="dark" data-feature-sticky>
+      <div class="absolute inset-0" data-feature-clip>
+        <div class="absolute inset-0 overflow-hidden bg-band" data-feature-frame>
+          <div class="absolute inset-0" data-feature-zoom="20% 24%">
+            <div class="absolute inset-0" data-feature-inner>
+              {
+                firstCover && (
+                  <Image
+                    src={firstCover}
+                    alt=""
+                    aria-hidden="true"
+                    widths={[1280, 1920, 2400]}
+                    sizes="100vw"
+                    class="feature-swap absolute left-0 top-0 hidden max-w-none"
+                    data-feature-swap
+                  />
+                )
+              }
+              <Image
+                src={band.src}
+                alt={band.alt}
+                widths={[768, 1280, 1920, 2400]}
+                sizes="100vw"
+                class="absolute inset-0 h-full w-full object-cover"
+                style={`object-position:${band.position}`}
+                data-feature-band
+              />
+            </div>
+          </div>
+          <div aria-hidden="true" class="absolute inset-0 bg-scrim/30" data-feature-overlay></div>
+          <!-- The title takes the right half: the face is on the left of this photo. -->
+          <div class="wrap grid-12 relative h-full content-center">
+            <h2 id="work-title" class="statement col-span-4 max-w-[16ch] text-band-fg [text-shadow:0_1px_24px_rgb(0_0_0/0.25)] md:col-span-6 md:col-start-7" data-feature-title>
+              Agents, models and systems for safety-critical work: my projects.
+            </h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="feature-list relative z-[1] pt-5 pb-28 md:pb-40" data-feature-list>
+    <div class="wrap grid gap-24 md:gap-32" data-feature-list-inner>
+      {
+        work.map((entry, i) => {
+          const d = entry.data;
+          const l = layouts[i % layouts.length];
+          return (
+            <article class="group grid-12 reveal items-start gap-y-4" data-feature-row>
+              <a
+                href={`/work/${entry.id}`}
+                class:list={["col-span-4 block self-start overflow-hidden bg-surface", l.img]}
+                tabindex="-1"
+                aria-hidden="true"
+                data-feature-card={i === 0 ? "" : undefined}
+              >
+                {d.cover && (
+                  <Image
+                    src={d.cover}
+                    alt=""
+                    widths={[480, 800, 1200]}
+                    sizes={`(min-width: 768px) ${l.sizes}, 100vw`}
+                    class="w-full transition-transform duration-[1s] ease-[var(--ease-out)] group-hover:scale-[1.03]"
+                  />
+                )}
+              </a>
+              <div class:list={["col-span-4", l.meta]}>
+                <p class="flex flex-wrap items-center gap-3">
+                  {d.tag && <span class="tag">{d.tag}</span>}
+                  <span class="meta text-muted">{d.context}</span>
+                </p>
+                <h3 class="title mt-4 max-w-[18ch]">
+                  <a href={`/work/${entry.id}`} class="decoration-2 underline-offset-[6px] hover:underline">{d.title}</a>
+                </h3>
+                <p class="mt-4 max-w-[46ch] text-[19px] leading-[1.5] text-muted">{d.summary}</p>
+                {d.metric && (
+                  <div class="rule mt-8 flex flex-wrap items-end gap-x-6 gap-y-2 pt-5">
+                    <p class="font-display text-[clamp(3rem,6vw,5.5rem)] font-bold leading-[0.88] tracking-[-0.045em] text-accent">{d.metric.value}</p>
+                    <p class="max-w-[30ch] pb-1 text-[18px] leading-[1.35]" set:html={boldFigures(d.metric.label)} />
+                  </div>
+                )}
+              </div>
+            </article>
+          );
+        })
+      }
+      <a href="/work" class="more"><span>All projects</span></a>
+    </div>
+    <!-- Fades the list into the page as the section leaves. -->
+    <div aria-hidden="true" class="pointer-events-none absolute inset-0 bg-bg opacity-0" data-feature-veil></div>
+  </div>
+</section>
+
+<style>
+  /* The pinned layout only exists with motion on, on desktop. html.motion is set before
+     first paint (BaseLayout), so the page never jumps between the two layouts. */
+  @media (min-width: 1024px) {
+    :global(html.motion) .feature-wrap {
+      height: 200vh;
+    }
+    :global(html.motion) .feature-sticky {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+    }
+    /* The list starts one screen into the track, so it rises under the shrinking photo
+       and the first card is waiting where the photo lands. */
+    :global(html.motion) .feature-list {
+      margin-top: -100vh;
+      padding-top: 18vh;
+    }
+    :global(html.motion) .feature-swap {
+      display: block;
+    }
+  }
+</style>

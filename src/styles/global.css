@@ -1,0 +1,576 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@import "@fontsource-variable/funnel-display/wght.css";
+@import "@fontsource-variable/ibm-plex-sans/wght.css";
+@import "@fontsource/ibm-plex-mono/400.css";
+@import "@fontsource/ibm-plex-mono/500.css";
+
+/* Theme: class-based dark mode, set by the inline script in BaseLayout. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+  Palette: https://coolors.co/26532b-399e5a-5abcb9-63e2c6-6ef9f5
+  Forest #26532B, Green #399E5A, Teal #5ABCB9, Aquamarine #63E2C6, Cyan #6EF9F5,
+  with neutrals tinted toward Forest for page, text and lines.
+  Roles (contrast checked):
+  - Forest is the only palette colour used as text on the light page (7.9:1).
+  - Green and Teal are for dots, rules and large figures, never small text.
+  - Aquamarine and Cyan are text colours only on Forest or the dark page.
+  Type: Funnel Display for names, statements and titles; IBM Plex Sans for
+  running text; IBM Plex Mono for labels, dates and counters.
+*/
+:root {
+  --bg: #eef3ef;
+  --surface: #e2eae4;
+  --fg: #0f2414;
+  --muted: #56685b;
+  --line: #c9d6cd;
+  --accent: #26532b;
+  --accent-fg: #eef3ef;
+  --accent-soft: #d5e9dc;
+  --accent-2: #399e5a;
+  --band: #26532b;
+  --band-fg: #eef3ef;
+  --band-muted: #a9c7b1;
+  --band-line: #3d6b42;
+  --band-accent: #6ef9f5;
+  --aqua: #63e2c6;
+  --scrim: #0b1a0f;
+  color-scheme: light;
+}
+
+.dark {
+  --bg: #0b1a0f;
+  --surface: #12261a;
+  --fg: #e6f2ec;
+  --muted: #8fa697;
+  --line: #1f3a28;
+  --accent: #63e2c6;
+  --accent-fg: #0b1a0f;
+  --accent-soft: #163423;
+  --accent-2: #5abcb9;
+  --band: #12261a;
+  --band-fg: #e6f2ec;
+  --band-muted: #8fa697;
+  --band-line: #24432f;
+  --band-accent: #6ef9f5;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-band: var(--band);
+  --color-band-fg: var(--band-fg);
+  --color-band-muted: var(--band-muted);
+  --color-band-line: var(--band-line);
+  --color-band-accent: var(--band-accent);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-2: var(--accent-2);
+  --color-aqua: var(--aqua);
+  --color-scrim: var(--scrim);
+  --font-display: "Funnel Display Variable", "Helvetica Neue", Arial, sans-serif;
+  --font-sans: "IBM Plex Sans Variable", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  /* pda.archi motion curves: expo.out, and its two path eases as linear() samples. */
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-fio: linear(0.0, 0.009, 0.022, 0.042, 0.075, 0.13, 0.221, 0.351, 0.492, 0.619, 0.726, 0.808, 0.862, 0.894, 0.919, 0.938, 0.951, 0.961, 0.969, 0.975, 0.98, 0.983, 0.987, 0.989, 0.991, 0.993, 0.994, 0.995, 0.996, 0.997, 0.998, 0.998, 0.999, 0.999, 0.999, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0);
+  --ease-quicky: linear(0.0, 0.009, 0.025, 0.05, 0.091, 0.156, 0.256, 0.383, 0.513, 0.628, 0.721, 0.793, 0.846, 0.884, 0.907, 0.928, 0.948, 0.962, 0.97, 0.976, 0.981, 0.984, 0.987, 0.989, 0.991, 0.993, 0.994, 0.995, 0.996, 0.997, 0.997, 0.998, 0.998, 0.999, 0.999, 0.999, 1.0, 1.0, 1.0, 1.0, 1.0);
+}
+
+@layer base {
+  html {
+    scroll-padding-top: 5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-bg text-fg font-sans antialiased;
+    font-size: 16px;
+    line-height: 1.45;
+    font-weight: 430;
+    letter-spacing: -0.006em;
+  }
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    text-wrap: balance;
+  }
+  ::selection {
+    background: var(--accent);
+    color: var(--accent-fg);
+  }
+  /* Link dots: Green on the page, Cyan on Forest and over photos. */
+  :root {
+    --dot: var(--accent-2);
+  }
+  [data-tone="dark"] {
+    --dot: var(--band-accent);
+  }
+  :focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+  }
+}
+
+@layer components {
+  /* Page gutters: PDA-style tight 20px edges that open up a little on wide screens. */
+  .wrap {
+    @apply mx-auto w-full max-w-[1680px] px-4 md:px-5 xl:px-8;
+  }
+  /* 12-column grid used by most sections. */
+  .grid-12 {
+    @apply grid grid-cols-4 gap-x-4 md:grid-cols-12 md:gap-x-5;
+  }
+  /* Meta labels in the mono utility face. 16px is the floor for all text. */
+  .meta {
+    @apply font-mono text-[16px] font-normal leading-tight tracking-[0.01em];
+  }
+  /* Pill tag, as used on project rows. */
+  .tag {
+    @apply inline-block rounded-full bg-accent-soft px-3 py-1 font-mono text-[16px] font-normal leading-tight tracking-[0.01em] text-accent;
+  }
+  /*
+    Display type scale (Funnel Display), largest to smallest:
+    .display    page titles on index pages          40 to 76px
+    .statement  opening statements, section leads   36 to 68px
+    .title      section titles                      32 to 56px
+    .subtitle   card, row and group headings        22 to 30px
+  */
+  .display {
+    @apply font-display font-semibold leading-[1] tracking-[-0.038em] text-balance;
+    font-size: clamp(2.5rem, 5.2vw, 4.75rem);
+  }
+  .statement {
+    @apply font-display font-semibold leading-[1.02] tracking-[-0.035em] text-balance;
+    font-size: clamp(2.25rem, 4.6vw, 4.25rem);
+  }
+  .title {
+    @apply font-display font-semibold leading-[1.04] tracking-[-0.032em];
+    font-size: clamp(2rem, 3.8vw, 3.5rem);
+  }
+  .subtitle {
+    @apply font-display font-semibold leading-[1.1] tracking-[-0.025em];
+    font-size: clamp(1.375rem, 2vw, 1.875rem);
+  }
+  /* Underlined text links with a small leading dot, like "o Discover". */
+  .more {
+    @apply inline-flex items-center gap-2 text-[16px];
+  }
+  .more::before {
+    content: "";
+    @apply size-[8px] rounded-full;
+    background: var(--dot);
+  }
+  /* The underline retracts to the right on hover and draws back in after a beat. */
+  .more > span {
+    background: linear-gradient(currentColor, currentColor) 0 100% / 100% 1px no-repeat;
+    padding-bottom: 2px;
+    transition: background-size 0.45s var(--ease-out) 0.15s;
+  }
+  .more:hover > span {
+    background-position: 100% 100%;
+    background-size: 0 1px;
+    transition-delay: 0s;
+  }
+  .more::before {
+    transition: transform 0.7s var(--ease-out);
+  }
+  .more:hover::before {
+    transform: scale(1.7);
+  }
+  .link-underline {
+    background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+    transition: background-size 0.4s var(--ease-out-quint);
+  }
+  .link-underline:hover {
+    background-size: 100% 1px;
+  }
+  /* Rounded pill buttons in the header. */
+  .pill {
+    @apply inline-flex h-9 items-center rounded-full px-4 text-[16px] transition-colors;
+  }
+}
+
+/* Cross-document page transitions (no JS). Browsers without support just navigate. */
+@view-transition {
+  navigation: auto;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .enter {
+    animation: enter 1s var(--ease-out-quint) both;
+    animation-delay: calc(var(--i, 0) * 80ms);
+  }
+
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: enter linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 35%;
+    }
+    /* Gentle parallax for framed photos. */
+    .drift {
+      animation: drift linear both;
+      animation-timeline: view();
+    }
+  }
+}
+
+/* Header ink follows the section under it (see Header.astro). */
+.header-ink {
+  color: var(--fg);
+  transition: color 0.3s ease;
+}
+[data-header][data-on-dark] .header-ink {
+  color: var(--band-fg);
+}
+
+/* Heading line reveal (SplitText, see scripts/motion.ts). The mask clips each line, so
+   it gets a little vertical room for descenders at tight leading. */
+.line-mask {
+  padding-block: 0.14em;
+  margin-block: -0.14em;
+}
+/* The lines carry the motion, so the block itself stays put. */
+.split.reveal {
+  animation: none;
+}
+
+/* Mountain mark: the ridge draws in and the sun rises; the sun lifts on hover.
+   The header mark plays on load, the footer mark as it scrolls into view. */
+.peaks-sun {
+  transition: transform 0.6s var(--ease-out-quint);
+}
+.logo:hover .peaks-sun {
+  transform: translateY(-3px);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .peaks-ridge {
+    stroke-dasharray: 1;
+    animation: ridge 1.6s var(--ease-out-quint) 0.2s both;
+  }
+  .peaks-sun {
+    animation: sunrise 1.2s var(--ease-out-quint) 1s backwards;
+  }
+  @supports (animation-timeline: view()) {
+    .peaks-scroll .peaks-ridge {
+      animation: ridge linear both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 40%;
+    }
+    .peaks-scroll .peaks-sun {
+      animation: sunrise linear both;
+      animation-timeline: view();
+      animation-range: cover 25% cover 45%;
+    }
+  }
+}
+@keyframes ridge {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes sunrise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @view-transition {
+    navigation: none;
+  }
+}
+
+@keyframes enter {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes drift {
+  from {
+    transform: translateY(-6%) scale(1.12);
+  }
+  to {
+    transform: translateY(6%) scale(1.12);
+  }
+}
+
+/* Long-form content (case studies and notes). */
+.prose-site {
+  @apply prose max-w-none;
+  --tw-prose-body: var(--fg);
+  --tw-prose-headings: var(--fg);
+  --tw-prose-links: var(--accent);
+  --tw-prose-bold: var(--fg);
+  --tw-prose-bullets: var(--accent-2);
+  --tw-prose-counters: var(--muted);
+  --tw-prose-hr: var(--line);
+  --tw-prose-quotes: var(--fg);
+  --tw-prose-quote-borders: var(--accent-2);
+  --tw-prose-code: var(--fg);
+  --tw-prose-th-borders: var(--line);
+  --tw-prose-td-borders: var(--line);
+  font-size: 17px;
+  line-height: 1.55;
+  font-weight: 400;
+}
+/* Prose shrinks code and captions below 16px by default; hold them at the floor. */
+.prose-site :where(code, figcaption, small, kbd) {
+  font-size: 16px;
+}
+.prose-site :where(h2) {
+  @apply font-display font-semibold tracking-[-0.032em] leading-[1.04];
+  font-size: clamp(2rem, 3.4vw, 3rem);
+}
+.prose-site :where(h3) {
+  @apply font-display font-semibold tracking-[-0.025em] leading-[1.1];
+  font-size: clamp(1.375rem, 2vw, 1.875rem);
+}
+.prose-site :where(a) {
+  @apply underline-offset-4 decoration-1;
+}
+.prose-site :where(strong) {
+  @apply font-semibold;
+}
+.prose-site :where(code):not(pre code) {
+  @apply rounded bg-surface px-1.5 py-0.5 font-normal before:content-none after:content-none;
+}
+.prose-site :where(pre) {
+  @apply rounded-none border border-line;
+}
+
+/*
+  Case-study body: each h2 sits in the left half and its paragraphs and lists
+  run in a narrower right column, like PDA's "heading left, text right" rows.
+*/
+@media (min-width: 900px) {
+  .prose-split {
+    display: flow-root;
+  }
+  .prose-split > :where(h2) {
+    float: left;
+    clear: both;
+    width: 46%;
+    margin-top: 0;
+    padding-top: 5rem;
+  }
+  .prose-split > :where(h2):first-child {
+    padding-top: 0;
+  }
+  .prose-split > :where(:not(h2)) {
+    margin-left: 50%;
+    max-width: 62ch;
+  }
+  .prose-split > :where(h2) + * {
+    padding-top: 5rem;
+    margin-top: 0;
+  }
+  .prose-split > :where(h2:first-child) + * {
+    padding-top: 0;
+  }
+}
+
+/* Rules draw in from the left as they enter view (PDA's separator): 1s, 0.5s delay. */
+.rule {
+  position: relative;
+  border-top: 1px solid var(--rule-color, currentColor);
+}
+html.motion .rule {
+  border-top-color: transparent;
+}
+html.motion .rule::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  background: var(--rule-color, currentColor);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1s var(--ease-quicky) 0.5s;
+}
+html.motion .rule.is-in::before {
+  transform: none;
+}
+
+/* Hovering a row dims its siblings. */
+.list-o > * {
+  transition: opacity 0.35s var(--ease-out);
+}
+@media (hover: hover) {
+  .list-o:hover > :not(:hover) {
+    opacity: 0.32;
+  }
+}
+
+/* First visit: the page waits above the viewport while the loader shows. */
+#loader {
+  display: none;
+}
+html.intro body {
+  overflow: hidden;
+}
+html.intro #loader {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  display: grid;
+  place-items: center;
+  background: var(--bg);
+  color: var(--muted);
+}
+html.intro #page {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 1;
+  height: 100svh;
+  overflow: hidden;
+  background: var(--bg);
+  transform: translateY(-100vh);
+}
+html.intro [data-header] {
+  opacity: 0;
+}
+/* Hero text enters once the page starts to appear. */
+html.intro:not(.appeared) .enter {
+  animation-play-state: paused;
+}
+
+/* Page transition (cross-document): the old page sinks and dims while the new one drops
+   in from above. 1.6s on PDA's fast-in-out curve. The fixed header layers stay put. */
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    mix-blend-mode: normal;
+    animation-duration: 1.6s;
+    animation-timing-function: var(--ease-fio);
+    animation-fill-mode: both;
+  }
+  ::view-transition-old(root) {
+    animation-name: vt-sink;
+  }
+  ::view-transition-new(root) {
+    animation-name: vt-drop;
+  }
+  .header-ink,
+  .header-pills {
+    view-transition-name: none;
+  }
+}
+@keyframes vt-sink {
+  to {
+    transform: translateY(20rem);
+    filter: brightness(0.1);
+  }
+}
+@keyframes vt-drop {
+  from {
+    transform: translateY(-100vh);
+  }
+}
+
+/* Footer: its content rises into place under a fading veil as the footer scrolls in. */
+.footer-dim {
+  opacity: 0;
+}
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    footer {
+      view-timeline: --footer block;
+    }
+    .footer-inner {
+      animation: footer-in linear both;
+      animation-timeline: --footer;
+      animation-range: entry 0% entry 100%;
+    }
+    .footer-dim {
+      animation: footer-veil linear both;
+      animation-timeline: --footer;
+      animation-range: entry 0% entry 100%;
+    }
+  }
+}
+@keyframes footer-in {
+  from {
+    transform: translateY(-20%);
+  }
+}
+@keyframes footer-veil {
+  from {
+    opacity: 0.8;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Full-screen menu: the panel drops in, then the links rise out of masks. */
+#menu {
+  transform: translateY(-100%);
+  transition:
+    transform 1.2s var(--ease-fio),
+    overlay 1.2s allow-discrete,
+    display 1.2s allow-discrete;
+}
+#menu[open] {
+  transform: none;
+}
+@starting-style {
+  #menu[open] {
+    transform: translateY(-100%);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  #menu nav li {
+    overflow: hidden;
+  }
+  #menu nav li > a {
+    transform: translateY(120%);
+    transition: transform 1.2s var(--ease-expo);
+  }
+  #menu[open] nav li > a {
+    transform: none;
+    transition-delay: calc(0.35s + var(--i, 0) * 30ms);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  #menu {
+    transition: none;
+  }
+}
+
+/* Header: the nav links slide up out of sight once you scroll; the bar slides away at the footer. */
+[data-header] nav li {
+  overflow: hidden;
+}
+[data-header] nav li > a {
+  display: inline-block;
+  transition: transform 0.8s var(--ease-expo) calc(var(--i, 0) * 20ms);
+}
+[data-header][data-collapsed] nav li > a {
+  transform: translateY(-130%);
+  transition: transform 0.6s var(--ease-expo) calc(var(--i, 0) * 10ms);
+}
+[data-header] > div {
+  transition: transform 0.6s var(--ease-expo);
+}
+[data-header][data-hidden] > div {
+  transform: translateY(-100%);
+}

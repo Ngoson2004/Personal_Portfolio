@@ -1,0 +1,24 @@
+---
+// The mountain-and-sun mark that sits after the name in the header and footer.
+// Drawn in currentColor; `scroll` draws the ridge as the mark scrolls into view
+// instead of on page load.
+interface Props {
+  class?: string;
+  scroll?: boolean;
+}
+const { class: className, scroll = false } = Astro.props;
+---
+
+<svg viewBox="0 0 44 22" class:list={["peaks overflow-visible", scroll && "peaks-scroll", className]} aria-hidden="true">
+  <circle class="peaks-sun" cx="39" cy="4" r="2.7" fill="currentColor" />
+  <path
+    class="peaks-ridge"
+    d="M1 21 L11 8 L16 13 L24 2 L33 14 L37 11 L43 21"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2.4"
+    stroke-linejoin="round"
+    stroke-linecap="round"
+    pathLength="1"
+  />
+</svg>

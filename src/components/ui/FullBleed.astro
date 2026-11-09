@@ -1,0 +1,71 @@
+---
+// Inner-page opening, after PDA's project and studio heroes: a full-bleed photo,
+// a large title at mid-height on the left, a short descriptor under it and a
+// row of facts along the bottom edge.
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+
+interface Props {
+  src: ImageMetadata;
+  alt: string;
+  position?: string;
+  title: string;
+  /** Short line beside the title. */
+  descriptor?: string;
+  /** Facts along the bottom edge, e.g. ["2025", "CSIRO Manufacturing"]. */
+  facts?: string[];
+  class?: string;
+}
+const { src, alt, position = "50% 50%", title, descriptor, facts = [], class: className } = Astro.props;
+---
+
+<section data-tone="dark" data-bleed class:list={["relative h-svh min-h-[560px] overflow-hidden bg-band text-band-fg", className]}>
+  <!-- The wrapper carries the scroll parallax (scripts/scroll.ts); the photo keeps its
+       own settle animation. -->
+  <div class="absolute inset-0" data-bleed-media>
+    <Image
+      src={src}
+      alt={alt}
+      widths={[768, 1280, 1920, 2400]}
+      sizes="100vw"
+      loading="eager"
+      fetchpriority="high"
+      class="hero-zoom absolute inset-0 h-full w-full object-cover"
+      style={`object-position:${position}`}
+    />
+  </div>
+  <div aria-hidden="true" class="absolute inset-0 bg-gradient-to-b from-scrim/40 via-scrim/10 to-scrim/60" />
+  <div class="wrap relative h-full">
+    <div class="grid-12 absolute inset-x-0 top-1/2 -translate-y-1/2 items-baseline gap-y-3 px-[inherit]">
+      <h1 class="font-display enter col-span-4 text-[clamp(2.2rem,3.6vw,3.5rem)] font-semibold leading-[1] tracking-[-0.035em] text-balance md:col-span-5" style="--i:1">
+        {title}
+      </h1>
+      {descriptor && <p class="enter col-span-4 max-w-[38ch] text-[16px] md:col-span-5 md:col-start-1" style="--i:2">{descriptor}</p>}
+    </div>
+    {
+      facts.length > 0 && (
+        <ul class="grid-12 absolute inset-x-0 bottom-0 px-[inherit] pb-5 text-[16px]">
+          {facts.map((f, i) => (
+            <li class:list={["enter col-span-2 md:col-span-3", i === facts.length - 1 && facts.length > 1 && "text-right md:text-left"]} style={`--i:${i + 3}`}>
+              {f}
+            </li>
+          ))}
+        </ul>
+      )
+    }
+    <slot />
+  </div>
+</section>
+
+<style>
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-zoom {
+      animation: settle 1.8s var(--ease-out-quint) both;
+    }
+  }
+  @keyframes settle {
+    from {
+      scale: 1.1;
+    }
+  }
+</style>

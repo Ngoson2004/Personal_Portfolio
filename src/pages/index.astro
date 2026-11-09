@@ -1,0 +1,33 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Hero from "@/components/home/Hero.astro";
+import Statement from "@/components/home/Statement.astro";
+import Projects from "@/components/home/Projects.astro";
+import Expertise from "@/components/home/Expertise.astro";
+import Recognition from "@/components/home/Recognition.astro";
+import Notes from "@/components/home/Notes.astro";
+import { site } from "@/data/site";
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: site.name,
+  url: site.url,
+  jobTitle: site.role,
+  email: `mailto:${site.email}`,
+  worksFor: { "@type": "Organization", name: "Starbound Space Solutions" },
+  affiliation: { "@type": "CollegeOrUniversity", name: "Monash University" },
+  alumniOf: { "@type": "CollegeOrUniversity", name: "Swinburne University of Technology" },
+  knowsAbout: ["AI agent orchestration", "Knowledge representation", "Machine learning", "Regulatory compliance"],
+  sameAs: [site.links.github, site.links.linkedin],
+};
+---
+
+<BaseLayout jsonLd={jsonLd}>
+  <Hero />
+  <Statement />
+  <Projects />
+  <Expertise />
+  <Recognition />
+  <Notes />
+</BaseLayout>

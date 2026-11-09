@@ -1,0 +1,35 @@
+---
+title: Trustlane
+summary: AI-powered EV warranty coordination that catches missing evidence before a claim is submitted.
+context: Independent build
+tag: Voice agents
+order: 2
+metric:
+  value: "33"
+  label: behavioural scenarios in the evaluation suite
+stack: [AI agents, ElevenLabs, Voice workflows, Evaluation suites]
+links:
+  - label: Trustlane website
+    href: https://trustlane.house-of-imaginaries.com/
+cover: ../../assets/work/trustlane.jpg
+coverAlt: Trustlane landing page with the headline "Hours back on every claim" above a warranty claims dashboard
+---
+
+## The problem
+
+EV warranty claims stall when evidence is incomplete. Dealers and manufacturers go back and forth with repeated information requests, and technicians are pulled off the workshop floor to answer them.
+
+## What I built
+
+A platform that identifies missing documentation **before** a claim is submitted.
+
+- **Two-sided agents.** Dealer and manufacturer AI agents, each working from its own side of the claim.
+- **Deterministic checks.** Requirement checks that do not depend on model judgement, so gaps are flagged consistently.
+- **Voice evidence collection.** ElevenLabs voice workflows call technicians to collect evidence and keep auditable transcripts.
+- **Humans stay in charge.** Submissions are human-reviewed, and the system makes approval recommendations rather than decisions.
+
+## How it was validated
+
+- Three consecutive internal end-to-end walkthroughs.
+- **8/8** agent-turn checks and **9/9** technician-call checks in every walkthrough.
+- A **33-scenario** behavioural evaluation suite behind it.

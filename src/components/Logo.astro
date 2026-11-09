@@ -1,0 +1,16 @@
+---
+// Wordmark: the name followed by a small mountain range and a rising sun,
+// a nod to the hiking photos. Drawn in currentColor so it follows the header colour.
+import { site } from "@/data/site";
+import Peaks from "./Peaks.astro";
+
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+---
+
+<a href="/" class:list={["logo font-display inline-flex items-end gap-[0.18em] text-[26px] font-bold leading-none tracking-[-0.035em]", className]}>
+  <span>{site.name}</span>
+  <Peaks class="mb-[0.06em] h-[0.82em] w-auto" />
+</a>

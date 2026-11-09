@@ -1,0 +1,272 @@
+---
+import { Image } from "astro:assets";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import FullBleed from "@/components/ui/FullBleed.astro";
+import ToolIcon from "@/components/ToolIcon.astro";
+import { site } from "@/data/site";
+import { experience } from "@/data/experience";
+import { awards, education, methods, research, tools } from "@/data/profile";
+import { lifeCollage, photos } from "@/data/photos";
+
+const pad = (n: number) => `(${String(n).padStart(2, "0")})`;
+const csiro = experience.find((r) => r.org.startsWith("CSIRO"));
+const docs = [
+  { photo: photos.phdNews, title: "The National Tribune", caption: "Monash and Starbound National Industry PhD project" },
+  { photo: photos.phdLetter, title: "Scholarship offer", caption: "Faculty of Information Technology, personal details redacted" },
+  { photo: photos.phdCard, title: "Monash student card", caption: "Number and barcode removed" },
+];
+const aboutFacts = [
+  { label: "Graduated", value: `${education[1].degree.replace(", Professional Degree", "")}, ${education[1].school}` },
+  { label: "PhD", value: `${research.institution}, since ${research.start}` },
+  { label: "Partner", value: "Starbound Space Solutions" },
+];
+// Staggered heights for the collage, cycling.
+---
+
+<BaseLayout title="About" description={`About ${site.name}: ${site.subhead}`}>
+  <FullBleed
+    src={photos.cafeReading.src}
+    alt={photos.cafeReading.alt}
+    position={photos.cafeReading.position}
+    title="About"
+    descriptor={site.subhead}
+    facts={["Applied AI Scientist", "Starbound Space Solutions", "PhD, Monash University", "Melbourne"]}
+  />
+
+  <!-- Statement -->
+  <section aria-label="Introduction" class="wrap pt-5">
+    <p class="statement reveal">{site.intro}</p>
+    <div class="grid-12 mt-20 items-start gap-y-6 md:mt-28">
+      <p class="meta reveal col-span-4 md:col-span-12">About</p>
+      <Image
+        src={photos.graduation.src}
+        alt={photos.graduation.alt}
+        widths={[600, 1000, 1400]}
+        sizes="(min-width: 768px) 50vw, 100vw"
+        class="reveal col-span-4 w-full md:col-span-6"
+      />
+      <div class="reveal col-span-4 grid content-start gap-8 md:col-span-6">
+        <h2 class="title">From Swinburne to a Monash PhD</h2>
+        <dl class="grid border-t border-line">
+          {
+            aboutFacts.map((f) => (
+              <div class="grid grid-cols-6 gap-4 border-b border-line py-3">
+                <dt class="meta col-span-2 pt-1 text-muted">{f.label}</dt>
+                <dd class="col-span-4 text-[18px]">{f.value}</dd>
+              </div>
+            ))
+          }
+        </dl>
+        <div class="grid max-w-[46ch] gap-4 text-[19px] leading-[1.5]">
+          <p>{research.summary}</p>
+          <p>
+            The project is a partnership with Starbound Space Solutions, where I work as an Applied AI Scientist, and is
+            supported by a Faculty of Information Technology research scholarship.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Experience: PDA's "team" statement, featured portrait and rows -->
+  <section aria-labelledby="experience" class="pt-28 md:pt-44">
+    <div class="wrap">
+      <h2 id="experience" class="statement reveal max-w-[26ch]">
+        Five roles across space missions, drug discovery, factory floors, social platforms and satellite imagery.
+      </h2>
+    </div>
+
+    {
+      csiro && (
+        <div class="wrap grid-12 mt-20 items-start gap-y-8 md:mt-28">
+          <div class="reveal col-span-4 md:col-span-5">
+            <Image src={photos.csiroTeam.src} alt={photos.csiroTeam.alt} widths={[400, 800, 1200]} sizes="(min-width: 768px) 42vw, 100vw" class="w-full" />
+          </div>
+          <div class="reveal col-span-4 grid content-start gap-6 md:col-span-6 md:col-start-7">
+            <div>
+              <div class="flex items-center gap-4">
+                {csiro.logo && (
+                  <span class="grid size-16 shrink-0 place-items-center bg-white p-1.5 ring-1 ring-line">
+                    <Image src={csiro.logo} alt="" widths={[128, 192]} sizes="64px" class="max-h-full w-auto object-contain" />
+                  </span>
+                )}
+                <h3 class="title">{csiro.org}</h3>
+              </div>
+              <p class="mt-3 text-[19px]">{csiro.title}, {csiro.start} to {csiro.end}</p>
+              <p class="mt-1 text-muted">Pictured with my two supervisors.</p>
+            </div>
+            <ul class="grid gap-4 border-t border-line pt-6 text-[19px] leading-[1.5]">
+              {csiro.points.map((pt) => <li>{pt}</li>)}
+            </ul>
+          </div>
+        </div>
+      )
+    }
+
+    <div class="wrap mt-20 flex items-baseline justify-between md:mt-28">
+      <h3 class="title">Experience</h3>
+      <p class="title">{pad(experience.length)}</p>
+    </div>
+    <ul class="wrap list-o mt-6">
+      {
+        experience.map((role) => (
+          <li class="border-t border-line last:border-b">
+            <details class="group">
+              <summary class="grid-12 cursor-pointer list-none gap-y-1 py-5 transition-colors hover:bg-surface [&::-webkit-details-marker]:hidden">
+                <span class="meta col-span-4 pt-1 text-muted md:col-span-3">{role.start} to {role.end}</span>
+                <span class="col-span-4 flex items-start gap-4 md:col-span-4">
+                  {role.logo && (
+                    <span class="grid size-14 shrink-0 place-items-center bg-white p-1.5 ring-1 ring-line">
+                      <Image src={role.logo} alt="" widths={[112, 168]} sizes="56px" class="max-h-full w-auto object-contain" />
+                    </span>
+                  )}
+                  <span>
+                    <span class="subtitle block">{role.org}</span>
+                    <span class="mt-1 block text-[17px]">{role.title}</span>
+                  </span>
+                </span>
+                <span class="col-span-4 text-[17px] md:col-span-4">{role.summary}</span>
+                <span aria-hidden="true" class="hidden justify-self-end md:col-span-1 md:block">
+                  <span class="grid size-7 place-items-center rounded-full bg-surface transition-transform duration-500 group-open:rotate-45">
+                    <svg viewBox="0 0 10 10" class="w-2.5"><path d="M5 0v10M0 5h10" stroke="currentColor" stroke-width="1.2" /></svg>
+                  </span>
+                </span>
+              </summary>
+              <div class="grid-12 pb-8">
+                <div class="col-span-4 md:col-span-5 md:col-start-8">
+                  <ul class="grid gap-3 text-[17px] leading-[1.5]">
+                    {role.points.map((pt) => <li>{pt}</li>)}
+                  </ul>
+                  {role.stack && <p class="meta mt-5 text-muted">{role.stack.join(" / ")}</p>}
+                </div>
+              </div>
+            </details>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <!-- Research -->
+  <section aria-labelledby="research" class="wrap pt-28 md:pt-44">
+    <h2 id="research" class="statement reveal max-w-[24ch]">{research.topic}</h2>
+    <div class="grid-12 mt-16 gap-y-6">
+      <p class="meta col-span-4 md:col-span-6">{research.degree}, {research.institution}, since {research.start}</p>
+      <div class="col-span-4 md:col-span-6">
+        <a href="/work/requirements-derivation" class="more"><span>Read the Starbound case study</span></a>
+      </div>
+    </div>
+    <ul class="mt-14 grid grid-cols-2 items-start gap-x-2 gap-y-8 md:grid-cols-3">
+      {
+        docs.map((doc, i) => (
+          <li class:list={["reveal", i === 0 && "col-span-2 md:col-span-1"]}>
+            <div class="overflow-hidden bg-surface">
+              <Image src={doc.photo.src} alt={doc.photo.alt} widths={[400, 800]} sizes="(min-width: 768px) 33vw, 50vw" class="w-full" />
+            </div>
+            <p class="font-display mt-4 text-[21px] font-semibold leading-[1.15] tracking-[-0.022em]">{doc.title}</p>
+            <p class="text-[16px]">{doc.caption}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <!-- Focus: PDA's values list beside the build-week crowd, then CSIRO. -->
+  <section aria-labelledby="focus" class="wrap pt-28 md:pt-44">
+    <div class="grid-12 items-start gap-y-10">
+      <div class="col-span-4 md:col-span-6">
+        <div class="flex items-baseline justify-between border-b border-line pb-3">
+          <h2 id="focus" class="title">Focus</h2>
+          <p class="title text-muted">{pad(research.interests.length)}</p>
+        </div>
+        <ul class="font-display reveal mt-6 grid gap-1 text-[clamp(1.875rem,3vw,2.875rem)] font-semibold leading-[1.08] tracking-[-0.032em]">
+          {research.interests.map((r) => <li>{r}</li>)}
+        </ul>
+      </div>
+      <figure class="reveal col-span-4 md:col-span-6">
+        <Image src={photos.aabwCrowd.src} alt={photos.aabwCrowd.alt} widths={[600, 1000, 1400]} sizes="(min-width: 768px) 50vw, 100vw" class="w-full" />
+        <figcaption class="mt-3 text-[16px] text-muted">Agentic AI Build Week, where the Syncnapse team won the Founder Mode Track.</figcaption>
+      </figure>
+    </div>
+    <div class="grid-12 mt-16 items-start gap-y-8 md:mt-24">
+      <Image src={photos.csiroPresenting.src} alt={photos.csiroPresenting.alt} widths={[600, 1000, 1400]} sizes="(min-width: 768px) 66vw, 100vw" class="reveal col-span-4 w-full md:col-span-8" />
+      <!-- Title at the top and the result at the bottom, so the column spans the photo's height. -->
+      <div class="reveal col-span-4 flex flex-col gap-10 md:col-span-4 md:self-stretch md:justify-between">
+        <div class="grid gap-4">
+          <h3 class="statement">Presenting at CSIRO</h3>
+          <p class="text-[21px] leading-[1.5]">Presenting a workflow diagram with my two supervisors at CSIRO Manufacturing, where I worked as a Machine Learning Engineer.</p>
+          <a href="/work/drug-discovery-gnn" class="more"><span>Read the drug-discovery case study</span></a>
+        </div>
+        <div class="border-t border-line pt-4">
+          <p class="font-display text-[clamp(3rem,6vw,5.5rem)] font-semibold leading-[0.95] tracking-[-0.04em]">Top 13</p>
+          <p class="mt-3 max-w-[32ch] text-[18px] text-muted">of 370+ global participants in an AI-for-drug-discovery challenge</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Education and awards -->
+  <section aria-label="Education and awards" class="wrap grid-12 gap-y-16 pt-28 md:pt-44">
+    {
+      [
+        { title: "Education", rows: education.map((e) => ({ head: e.school, sub: e.degree, note: `${e.dates}. ${e.note}`, href: undefined as string | undefined })) },
+        { title: "Awards", rows: awards.map((a) => ({ head: a.title, sub: a.org, note: a.note, href: "href" in a ? a.href : undefined })) },
+      ].map((block) => (
+        <div class="col-span-4 md:col-span-6">
+          <h2 class="title">{block.title}</h2>
+          <ul class="mt-6">
+            {block.rows.map((r) => (
+              <li class="grid grid-cols-6 gap-4 border-t border-line py-4 text-[16px]">
+                <p class="font-display col-span-3 text-[21px] font-semibold leading-[1.15] tracking-[-0.022em]">{r.href ? <a href={r.href} class="link-underline">{r.head}</a> : r.head}</p>
+                <div class="col-span-3">
+                  <p>{r.sub}</p>
+                  <p class="mt-1 text-muted">{r.note}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
+  </section>
+
+  <!-- Toolkit -->
+  <section id="stack" aria-labelledby="toolkit" class="wrap pt-28 md:pt-44">
+    <h2 id="toolkit" class="title">Toolkit</h2>
+    <div class="grid-12 mt-8 gap-y-10">
+      {
+        tools.map((group) => (
+          <div class="reveal col-span-4 sm:col-span-2 md:col-span-3">
+            <h3 class="subtitle rule pt-3">{group.group}</h3>
+            <ul class="mt-5 grid gap-2.5">
+              {group.items.map((item) => (
+                <li class="flex items-center gap-3">
+                  <ToolIcon name={item.name} icon={"icon" in item ? item.icon : undefined} mark={"mark" in item ? item.mark : undefined} />
+                  <span class="text-[19px] font-medium">{item.name}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+    <h3 class="subtitle rule mt-16 pt-3">Methods</h3>
+    <ul class="mt-4 flex flex-wrap gap-1.5">
+      {methods.map((m) => <li class="tag">{m}</li>)}
+    </ul>
+  </section>
+
+  <!-- Life collage: personal, so it closes the page after the work. -->
+  <section aria-labelledby="life" class="wrap pt-28 pb-28 md:pt-44 md:pb-44">
+    <h2 id="life" class="title">Away from the desk</h2>
+    <ul class="mt-8 grid grid-cols-2 items-start gap-2 md:grid-cols-4">
+      {
+        lifeCollage.map((p, i) => (
+          <li class:list={["reveal overflow-hidden", i % 2 === 1 && "md:mt-20"]}>
+            <Image src={p.src} alt={p.alt} widths={[300, 600]} sizes="(min-width: 768px) 25vw, 50vw" class="w-full" />
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</BaseLayout>

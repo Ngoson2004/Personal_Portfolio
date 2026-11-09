@@ -1,0 +1,93 @@
+---
+import { Image } from "astro:assets";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import FullBleed from "@/components/ui/FullBleed.astro";
+import { site } from "@/data/site";
+import { photos } from "@/data/photos";
+
+const topics = ["Research collaboration", "Industry project", "Speaking or a talk", "Something else"];
+const row = [photos.aabwTeam, photos.csiroPoster, photos.aabwCall];
+---
+
+<BaseLayout title="Contact" description={`Get in touch with ${site.name} about research collaborations and industry projects.`}>
+  <FullBleed
+    src={photos.coast.src}
+    alt={photos.coast.alt}
+    position={photos.coast.position}
+    title="Contact"
+    descriptor="Open to research collaborations and industry projects in AI agents, regulatory compliance and applied machine learning."
+    facts={[site.location, "Replies by email"]}
+  />
+
+  <section aria-labelledby="talk" class="wrap pt-5 pb-28 md:pb-44">
+    <h2 id="talk" class="statement reveal max-w-[20ch]">A research idea, a project? Let's talk about it.</h2>
+
+    <div class="grid-12 mt-20 gap-y-14 md:mt-28">
+      <div class="col-span-4 grid content-start gap-8 text-[16px] md:col-span-3">
+        <div>
+          <p class="meta text-muted">Email</p>
+          <a href={`mailto:${site.email}`} class="mt-2 block w-fit link-underline">{site.email}</a>
+        </div>
+        <div>
+          <p class="meta text-muted">Based in</p>
+          <p class="mt-2">{site.location}</p>
+        </div>
+      </div>
+      <div class="col-span-4 grid content-start gap-8 text-[16px] md:col-span-3">
+        <div>
+          <p class="meta text-muted">Elsewhere</p>
+          <a href={site.links.linkedin} class="mt-2 block w-fit link-underline">LinkedIn</a>
+          <a href={site.links.github} class="block w-fit link-underline">GitHub</a>
+        </div>
+        <div>
+          <p class="meta text-muted">Resume</p>
+          <a href={site.resume} class="mt-2 block w-fit link-underline">Download PDF</a>
+        </div>
+      </div>
+
+      <!-- No backend on GitHub Pages: the form composes an email in the visitor's mail app. -->
+      <form class="col-span-4 grid content-start gap-6 md:col-span-6" data-mailto={site.email}>
+        <label class="grid gap-1">
+          <span class="meta text-muted">Name</span>
+          <input name="name" required autocomplete="name" class="border-b border-line bg-transparent py-2 text-[19px] outline-none focus:border-fg" />
+        </label>
+        <label class="grid gap-1">
+          <span class="meta text-muted">Topic</span>
+          <select name="topic" class="border-b border-line bg-transparent py-2 text-[19px] outline-none focus:border-fg">
+            {topics.map((t) => <option>{t}</option>)}
+          </select>
+        </label>
+        <label class="grid gap-1">
+          <span class="meta text-muted">Message</span>
+          <textarea name="message" required rows="4" class="resize-y border-b border-line bg-transparent py-2 text-[19px] outline-none focus:border-fg"></textarea>
+        </label>
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <p class="text-[16px] text-muted">Opens your email app with the message ready to send.</p>
+          <button type="submit" class="pill bg-fg text-bg hover:opacity-85">Send message</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <ul class="wrap grid grid-cols-3 items-start gap-2 pb-2">
+    {
+      row.map((p, i) => (
+        <li class:list={["reveal overflow-hidden", i === 1 && "mt-16"]}>
+          <Image src={p.src} alt={p.alt} widths={[400, 800]} sizes="33vw" class="w-full" />
+        </li>
+      ))
+    }
+  </ul>
+</BaseLayout>
+
+<script>
+  for (const form of document.querySelectorAll<HTMLFormElement>("form[data-mailto]")) {
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const data = new FormData(form);
+      const subject = `${data.get("topic")} from ${data.get("name")}`;
+      const body = `${data.get("message")}\n\n${data.get("name")}`;
+      location.href = `mailto:${form.dataset.mailto}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    });
+  }
+</script>

@@ -1,0 +1,21 @@
+<button
+  type="button"
+  data-theme-toggle
+  class="link-underline text-[16px]"
+  aria-label="Toggle dark mode"
+>
+  <span class="dark:hidden">Switch to dark</span>
+  <span class="hidden dark:inline">Switch to light</span>
+</button>
+
+<script>
+  // Re-bind on every page load (cross-document navigation re-runs module scripts once per page).
+  for (const btn of document.querySelectorAll<HTMLButtonElement>("[data-theme-toggle]")) {
+    btn.addEventListener("click", () => {
+      const dark = document.documentElement.classList.toggle("dark");
+      try {
+        localStorage.setItem("theme", dark ? "dark" : "light");
+      } catch {}
+    });
+  }
+</script>

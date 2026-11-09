@@ -1,0 +1,25 @@
+---
+// A toolkit logo from Simple Icons, inlined at build time in currentColor.
+// Tools without a Simple Icons entry get a short monogram in the same tile.
+import * as si from "simple-icons";
+
+interface Props {
+  name: string;
+  icon?: string;
+  mark?: string;
+}
+const { name, icon, mark } = Astro.props;
+const key = icon ? `si${icon.charAt(0).toUpperCase()}${icon.slice(1)}` : undefined;
+const glyph = key ? (si as unknown as Record<string, { path: string } | undefined>)[key] : undefined;
+const monogram = mark ?? name.replace(/[^A-Za-z0-9# ]/g, "").split(" ").map((w) => w[0]).join("").slice(0, 2);
+---
+
+<span aria-hidden="true" class="grid size-10 shrink-0 place-items-center border border-line text-fg">
+  {
+    glyph ? (
+      <svg viewBox="0 0 24 24" class="size-[22px]"><path d={glyph.path} fill="currentColor" /></svg>
+    ) : (
+      <span class="font-mono text-[16px] leading-none tracking-[-0.02em]">{monogram}</span>
+    )
+  }
+</span>

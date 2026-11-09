@@ -1,0 +1,42 @@
+---
+// Phosphor icons (regular weight), inlined at build time. Add new ones to the map.
+import ArrowUpRight from "@phosphor-icons/core/assets/regular/arrow-up-right.svg";
+import ArrowRight from "@phosphor-icons/core/assets/regular/arrow-right.svg";
+import ArrowLeft from "@phosphor-icons/core/assets/regular/arrow-left.svg";
+import Github from "@phosphor-icons/core/assets/regular/github-logo.svg";
+import Linkedin from "@phosphor-icons/core/assets/regular/linkedin-logo.svg";
+import Envelope from "@phosphor-icons/core/assets/regular/envelope-simple.svg";
+import FileText from "@phosphor-icons/core/assets/regular/file-text.svg";
+import Sun from "@phosphor-icons/core/assets/regular/sun.svg";
+import Moon from "@phosphor-icons/core/assets/regular/moon.svg";
+import Rss from "@phosphor-icons/core/assets/regular/rss-simple.svg";
+import List from "@phosphor-icons/core/assets/regular/list.svg";
+import X from "@phosphor-icons/core/assets/regular/x.svg";
+
+const icons = {
+  "arrow-up-right": ArrowUpRight,
+  "arrow-right": ArrowRight,
+  "arrow-left": ArrowLeft,
+  github: Github,
+  linkedin: Linkedin,
+  email: Envelope,
+  file: FileText,
+  sun: Sun,
+  moon: Moon,
+  rss: Rss,
+  menu: List,
+  close: X,
+};
+
+export type IconName = keyof typeof icons;
+
+interface Props {
+  name: IconName;
+  class?: string;
+}
+
+const { name, class: className = "size-4" } = Astro.props;
+const Svg = icons[name];
+---
+
+<Svg class={className} aria-hidden="true" focusable="false" />

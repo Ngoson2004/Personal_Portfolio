@@ -1,0 +1,221 @@
+---
+// Home hero: a full-bleed slideshow. Each photo is anchored on the face (photos.ts).
+// The section is sticky, so the statement below slides up over it.
+// Type: the name in the display face, the role a step softer, the tagline as the
+// one large line, and mono labels for the controls. Nothing is under 16px.
+// All text uses the paper tone (band-fg) instead of pure white.
+import { Image } from "astro:assets";
+import { site } from "@/data/site";
+import { heroSlides } from "@/data/photos";
+
+const [w1, w2, w3, w4] = site.wordmark;
+const total = String(heroSlides.length).padStart(2, "0");
+---
+
+<section data-tone="dark" class="sticky top-0 z-0 h-svh min-h-[560px] overflow-hidden bg-band text-band-fg" data-hero aria-roledescription="carousel" aria-label="Photos of Son">
+  {
+    heroSlides.map((slide, i) => (
+      <div
+        class="hero-slide absolute inset-0"
+        data-slide
+        data-active={i === 0 ? "" : undefined}
+        data-first={i === 0 ? "" : undefined}
+        role="group"
+        aria-roledescription="slide"
+        aria-label={`${i + 1} of ${heroSlides.length}`}
+        aria-hidden={i === 0 ? undefined : "true"}
+      >
+        <Image
+          src={slide.src}
+          alt={slide.alt}
+          widths={[768, 1280, 1920, 2400]}
+          sizes="100vw"
+          loading={i === 0 ? "eager" : "lazy"}
+          fetchpriority={i === 0 ? "high" : "low"}
+          class="h-full w-full object-cover"
+          style={`object-position:${slide.position}`}
+        />
+        <div aria-hidden="true" class="absolute inset-0 bg-gradient-to-b from-scrim/45 from-0% via-scrim/0 via-40% to-scrim/80" />
+        <div aria-hidden="true" class="absolute inset-0 bg-gradient-to-r from-scrim/45 via-scrim/0 to-scrim/45" />
+      </div>
+    ))
+  }
+
+  <div class="hero-content wrap relative z-[3] h-full">
+    <!-- Name left, role right: the centre column stays clear so no text sits on a face. -->
+    <h1 class="font-display grid-12 absolute inset-x-0 top-1/2 -translate-y-1/2 px-[inherit] text-[clamp(1.75rem,2.9vw,3rem)] font-semibold leading-[1.05] tracking-[-0.03em] [text-shadow:0_1px_20px_rgb(0_0_0/0.3)]">
+      <span class="enter col-span-2 md:col-span-4" style="--i:1">{w1} {w2}</span>
+      <span class="enter col-span-2 text-right font-medium text-aqua md:col-span-4 md:col-start-9" style="--i:2">{w3} {w4}</span>
+    </h1>
+
+    <div class="grid-12 absolute inset-x-0 bottom-0 items-end gap-y-6 px-[inherit] pb-5">
+      <div class="col-span-4 flex flex-wrap items-center gap-1.5 md:col-span-6">
+        {
+          heroSlides.map((slide, i) => (
+            <button
+              type="button"
+              data-thumb
+              aria-label={`Show photo ${i + 1}: ${slide.alt}`}
+              aria-current={i === 0 ? "true" : undefined}
+              class="h-8 w-12 overflow-hidden rounded-full opacity-55 outline-offset-2 transition-opacity hover:opacity-100 aria-[current=true]:opacity-100 aria-[current=true]:outline aria-[current=true]:outline-1 aria-[current=true]:outline-band-accent"
+            >
+              <Image src={slide.src} alt="" widths={[120]} sizes="48px" class="h-full w-full object-cover" style={`object-position:${slide.position}`} />
+            </button>
+          ))
+        }
+        <p class="meta ml-3 tabular-nums text-band-fg/75" aria-hidden="true"><span data-count>01</span> / {total}</p>
+      </div>
+      <div class="col-span-4 grid gap-5 md:col-start-9">
+        <p class="font-display enter text-[clamp(2rem,3.6vw,3.4rem)] font-semibold leading-[0.98] tracking-[-0.035em] text-balance [text-shadow:0_1px_24px_rgb(0_0_0/0.2)]" style="--i:3">
+          {site.tagline}
+        </p>
+        <a href="#work" class="more pb-1"><span>Discover</span></a>
+      </div>
+    </div>
+  </div>
+
+  <div aria-hidden="true" class="hero-dim pointer-events-none absolute inset-0 z-[2] bg-scrim" />
+  <div aria-hidden="true" class="absolute inset-x-0 bottom-0 z-[3] h-[3px] bg-band-fg/15">
+    <div class="h-full origin-left bg-band-accent" data-progress style="transform:scaleX(0)" />
+  </div>
+</section>
+
+<style>
+  .hero-slide {
+    visibility: hidden;
+    overflow: hidden;
+  }
+  .hero-slide[data-active] {
+    visibility: visible;
+    z-index: 2;
+  }
+  .hero-slide[data-leaving] {
+    visibility: visible;
+    z-index: 1;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    /* PDA's slide change: the new slide travels in from the right while its photo drifts
+       the other way; the old photo slips back and darkens underneath. 1.7s, fast-in-out. */
+    .hero-slide[data-active]:not([data-first]) {
+      animation: slide-in 1.7s var(--ease-fio) both;
+    }
+    .hero-slide[data-active]:not([data-first]) :global(img) {
+      animation: inner-in 1.7s var(--ease-fio) both;
+    }
+    .hero-slide[data-leaving] :global(img) {
+      animation: inner-out 1.7s var(--ease-fio) both;
+    }
+    .hero-slide[data-leaving]::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: var(--scrim);
+      animation: dim 1.7s var(--ease-fio) both;
+    }
+    /* First load: the photo settles from a slight zoom, as PDA's hero image does. */
+    .hero-slide[data-first] :global(img) {
+      animation: settle 2.4s var(--ease-fio) both;
+    }
+  }
+  @keyframes slide-in {
+    from {
+      transform: translateX(100%);
+    }
+  }
+  @keyframes inner-in {
+    from {
+      transform: translateX(-7%) scale(1.15);
+    }
+  }
+  @keyframes inner-out {
+    to {
+      transform: translateX(-7%) scale(1.15);
+    }
+  }
+  @keyframes dim {
+    to {
+      opacity: 0.8;
+    }
+  }
+  @keyframes settle {
+    from {
+      transform: scale(1.1);
+    }
+  }
+  /* Scrolling away: the content sinks and the photo dims (see --hero-p in the script). */
+  .hero-content {
+    transform: translateY(calc(var(--hero-p, 0) * 25%));
+  }
+  .hero-dim {
+    opacity: calc(var(--hero-p, 0) * 0.3);
+  }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>("[data-hero]");
+  if (root) {
+    const slides = [...root.querySelectorAll<HTMLElement>("[data-slide]")];
+    const thumbs = [...root.querySelectorAll<HTMLButtonElement>("[data-thumb]")];
+    const bar = root.querySelector<HTMLElement>("[data-progress]")!;
+    const count = root.querySelector<HTMLElement>("[data-count]");
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const DURATION = 10000;
+    let index = 0;
+    let started = performance.now();
+    let elapsedAtPause = 0;
+
+    const show = (next: number) => {
+      const prev = slides[index];
+      index = (next + slides.length) % slides.length;
+      if (slides[index] === prev) return;
+      // The outgoing slide stays visible underneath while the new one travels in.
+      prev.removeAttribute("data-first");
+      prev.setAttribute("data-leaving", "");
+      setTimeout(() => prev.removeAttribute("data-leaving"), 1700);
+      slides.forEach((s, i) => {
+        s.toggleAttribute("data-active", i === index);
+        s.setAttribute("aria-hidden", String(i !== index));
+        if (i === index) s.removeAttribute("data-leaving");
+      });
+      slides[index].removeAttribute("data-first");
+      thumbs.forEach((t, i) => t.setAttribute("aria-current", String(i === index)));
+      if (count) count.textContent = String(index + 1).padStart(2, "0");
+      started = performance.now();
+      elapsedAtPause = 0;
+    };
+
+    thumbs.forEach((t, i) => t.addEventListener("click", () => show(i)));
+
+    // The slides keep turning under the pointer and the controls. They only hold while
+    // the tab is in the background, and never start under reduced motion.
+    const tick = (now: number) => {
+      const holding = reduce || document.hidden;
+      if (holding) {
+        elapsedAtPause = elapsedAtPause || now - started;
+        started = now - elapsedAtPause;
+      } else {
+        elapsedAtPause = 0;
+        const t = (now - started) / DURATION;
+        if (t >= 1) show(index + 1);
+      }
+      bar.style.transform = `scaleX(${Math.min(1, (now - started) / DURATION)})`;
+      requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+
+    // Scroll-out: --hero-p runs 0 to 1 over the first screen of scrolling.
+    let queued = false;
+    addEventListener(
+      "scroll",
+      () => {
+        if (queued) return;
+        queued = true;
+        requestAnimationFrame(() => {
+          queued = false;
+          root.style.setProperty("--hero-p", String(Math.min(1, scrollY / innerHeight)));
+        });
+      },
+      { passive: true },
+    );
+  }
+</script>

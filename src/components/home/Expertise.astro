@@ -1,0 +1,144 @@
+---
+// Dark band, after PDA's highlighted expertises: four areas as a large list. As you
+// scroll, the item crossing the middle of the screen lights up and the sticky photo
+// on the left swaps to match, instantly. Hovering an item takes over until the pointer
+// leaves the list. Every note stays in place, so nothing shifts while you scroll.
+import { Image } from "astro:assets";
+import { services } from "@/data/profile";
+import { photos } from "@/data/photos";
+
+// One photo per area, in list order. The National Tribune article (landscape) needs
+// the wider column to stay readable, so the photo column is five of twelve.
+const images = [photos.aabwTeam, photos.csiroPresenting, photos.phdNews, photos.csiroPoster];
+---
+
+<section aria-labelledby="expertise" data-tone="dark" class="relative z-10 bg-band text-band-fg" data-expertise>
+  <div class="wrap pt-6 pb-28 md:pb-40">
+    <h2 id="expertise" class="statement reveal max-w-[24ch]">
+      Agents, knowledge and requirements: what I bring to safety-critical teams.
+    </h2>
+
+    <div class="grid-12 mt-16 gap-y-10 md:mt-24">
+      <div class="col-span-4 md:col-span-5">
+        <div class="grid w-full items-start md:sticky md:top-24">
+          {
+            images.map((img, i) => (
+              <Image
+                src={img.src}
+                alt={img.alt}
+                widths={[400, 800, 1200]}
+                sizes="(min-width: 768px) 42vw, 100vw"
+                data-expertise-img
+                class:list={["w-full [grid-area:1/1]", i === 0 ? "opacity-100" : "opacity-0"]}
+              />
+            ))
+          }
+        </div>
+      </div>
+
+      <div class="col-span-4 md:col-span-6 md:col-start-7">
+        <ul data-expertise-list>
+          {
+            services.map((s, i) => (
+              <li
+                class="expertise-item border-t border-band-line py-4 md:py-6"
+                data-expertise-item
+                data-active={i === 0 ? "" : undefined}
+              >
+                <h3 class="font-display text-[clamp(2rem,3.6vw,3.5rem)] font-semibold leading-[1.08] tracking-[-0.035em]">
+                  {s.title}
+                </h3>
+                <p class="mt-2 max-w-[46ch] text-[19px] leading-[1.5] text-band-fg/80">{s.note}</p>
+              </li>
+            ))
+          }
+        </ul>
+        <div class="border-t border-band-line pt-10">
+          <a href="/about#stack" class="more"><span>See my toolkit</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* PDA dims the items that are not active to 16% and fades between them in 0.35s. */
+  .expertise-item {
+    opacity: 0.2;
+    transition: opacity 0.35s var(--ease-out);
+  }
+  .expertise-item[data-active] {
+    opacity: 1;
+  }
+  .expertise-item[data-active] h3 {
+    color: var(--band-accent);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .expertise-item {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const root = document.querySelector("[data-expertise]");
+  if (root) {
+    const list = root.querySelector<HTMLElement>("[data-expertise-list]")!;
+    const items = [...root.querySelectorAll<HTMLElement>("[data-expertise-item]")];
+    const imgs = [...root.querySelectorAll<HTMLElement>("[data-expertise-img]")];
+    let current = -1;
+    let hovered: number | null = null;
+
+    const activate = (index: number) => {
+      if (index === current) return;
+      current = index;
+      items.forEach((item, i) => item.toggleAttribute("data-active", i === index));
+      // Instant swap, as on PDA: no crossfade between photos.
+      imgs.forEach((img, i) => {
+        img.classList.toggle("opacity-100", i === index);
+        img.classList.toggle("opacity-0", i !== index);
+      });
+    };
+
+    // The scroll index: the last item whose top has passed the line (the middle of the
+    // screen on desktop, 90% down on phones, where the list is below the photo).
+    const desktop = matchMedia("(min-width: 768px)");
+    const fromScroll = () => {
+      const line = innerHeight * (desktop.matches ? 0.5 : 0.9);
+      let index = 0;
+      items.forEach((item, i) => {
+        if (item.getBoundingClientRect().top <= line) index = i;
+      });
+      return index;
+    };
+    const update = () => activate(hovered ?? fromScroll());
+
+    let queued = false;
+    addEventListener(
+      "scroll",
+      () => {
+        if (queued) return;
+        queued = true;
+        requestAnimationFrame(() => {
+          queued = false;
+          update();
+        });
+      },
+      { passive: true },
+    );
+    addEventListener("resize", update);
+
+    items.forEach((item, i) =>
+      item.addEventListener("pointerenter", (e) => {
+        if (e.pointerType !== "mouse") return;
+        hovered = i;
+        update();
+      }),
+    );
+    list.addEventListener("pointerleave", () => {
+      hovered = null;
+      update();
+    });
+    update();
+  }
+</script>

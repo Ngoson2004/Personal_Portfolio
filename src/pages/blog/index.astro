@@ -1,0 +1,54 @@
+---
+import { Image } from "astro:assets";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getNotes, readingTime } from "@/lib/notes";
+
+const notes = await getNotes();
+const monthYear = (d: Date) => d.toLocaleDateString("en-AU", { month: "long", year: "numeric" });
+---
+
+<BaseLayout title="Blog" description="Posts from Son Ngo on AI agents, evaluation, machine learning and doing a PhD alongside industry work.">
+  <section class="wrap pt-[140px] pb-28 md:pt-[180px] md:pb-44">
+    <div class="grid-12 items-end gap-y-6">
+      <h1 class="display enter col-span-4 md:col-span-6" style="--i:0">Blog</h1>
+      <p class="enter col-span-4 max-w-[40ch] text-[16px] md:col-span-4 md:col-start-7" style="--i:1">
+        Short write-ups on AI agents, evaluation and applied machine learning, plus what I learn along the way in my PhD.
+      </p>
+    </div>
+
+    {
+      notes.length === 0 ? (
+        <p class="mt-16 border-t border-line pt-6 text-muted">
+          The first post is on its way. In the meantime, the <a href="/work" class="text-fg underline underline-offset-4">case studies</a> cover recent work in depth.
+        </p>
+      ) : (
+        <ul class="mt-16 border-t border-line">
+          {notes.map((note) => (
+            <li class="border-b border-line">
+              <a href={`/blog/${note.id}`} class="group grid-12 gap-y-3 py-5 transition-colors hover:bg-surface">
+                <p class="meta col-span-4 pt-1 text-muted md:col-span-3">
+                  {monthYear(note.data.date)} &nbsp; ~ {readingTime(note.body)} min.
+                  {note.data.draft && <span class="tag ml-2">Draft</span>}
+                </p>
+                <div class="col-span-4 md:col-span-3">
+                  {note.data.cover && (
+                    <Image src={note.data.cover} alt="" widths={[300, 600]} sizes="25vw" class="mb-3 w-full" />
+                  )}
+                </div>
+                <h2 class="subtitle col-span-4 group-hover:underline group-hover:decoration-1 group-hover:underline-offset-4 md:col-span-3">
+                  {note.data.title}
+                </h2>
+                <div class="col-span-4 text-[16px] md:col-span-3">
+                  <p>{note.data.description}</p>
+                  {note.data.tags.length > 0 && (
+                    <p class="mt-3 flex flex-wrap gap-1">{note.data.tags.map((t) => <span class="tag">{t}</span>)}</p>
+                  )}
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </section>
+</BaseLayout>

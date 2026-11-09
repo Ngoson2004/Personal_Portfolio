@@ -1,0 +1,67 @@
+---
+// Notes in PDA's news layout: a featured entry beside its image, then dated rows.
+import { Image } from "astro:assets";
+import { getNotes, readingTime } from "@/lib/notes";
+
+const notes = (await getNotes()).slice(0, 4);
+// A note leads with a large image only when it has a cover; otherwise every note is a row.
+const featured = notes[0]?.data.cover ? notes[0] : undefined;
+const rows = featured ? notes.slice(1) : notes;
+const monthYear = (d: Date) => d.toLocaleDateString("en-AU", { month: "long", year: "numeric" });
+---
+
+{
+  notes.length > 0 && (
+    <section aria-labelledby="blog" data-tone="light" class="relative z-10 bg-bg pb-28 md:pb-44">
+      <div class="wrap grid-12 gap-y-8">
+        <h2 id="blog" class="title col-span-4 md:col-span-6">Blog</h2>
+        <a href="/blog" class="more col-span-4 md:col-span-6 md:justify-self-end"><span>All posts</span></a>
+      </div>
+
+      {featured && (
+      <a href={`/blog/${featured.id}`} class="group wrap grid-12 mt-10 gap-y-6">
+        <div class="col-span-4 flex flex-col justify-end md:col-span-6">
+          <p class="flex flex-wrap items-center gap-3 text-[16px] text-muted">
+            {featured.data.tags[0] && <span class="tag">{featured.data.tags[0]}</span>}
+            <span class="meta">{monthYear(featured.data.date)}</span>
+            <span class="meta">~ {readingTime(featured.body)} min.</span>
+          </p>
+          <h3 class="title mt-4 max-w-[22ch] group-hover:underline group-hover:decoration-1 group-hover:underline-offset-4">
+            {featured.data.title}
+          </h3>
+          <p class="mt-2 max-w-[48ch] text-[16px]">{featured.data.description}</p>
+        </div>
+        <div class="col-span-4 overflow-hidden bg-surface md:col-span-6">
+          {featured.data.cover ? (
+            <Image
+              src={featured.data.cover}
+              alt={featured.data.coverAlt ?? ""}
+              widths={[600, 1000]}
+              sizes="(min-width: 768px) 50vw, 100vw"
+              class="w-full transition-transform duration-[1.2s] group-hover:scale-[1.03]"
+            />
+          ) : (
+            <p aria-hidden="true" class="font-display flex aspect-[16/9] items-end p-6 text-[clamp(2rem,4vw,3.5rem)] font-semibold leading-[0.95] tracking-[-0.035em] text-muted">
+              {featured.data.title}
+            </p>
+          )}
+        </div>
+      </a>
+      )}
+
+      {rows.length > 0 && (
+        <ul class="wrap list-o mt-10 border-t border-line">
+          {rows.map((note) => (
+            <li class="border-b border-line">
+              <a href={`/blog/${note.id}`} class="grid-12 gap-y-2 py-5 transition-colors hover:bg-surface">
+                <p class="meta col-span-4 text-muted md:col-span-6">{monthYear(note.data.date)}</p>
+                <h3 class="subtitle col-span-4 md:col-span-3">{note.data.title}</h3>
+                <p class="col-span-4 text-[17px] md:col-span-3">{note.data.description}</p>
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
+  )
+}

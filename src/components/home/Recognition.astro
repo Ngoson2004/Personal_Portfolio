@@ -1,0 +1,82 @@
+---
+// Recognition slider, in place of PDA's client testimonials. Only real awards:
+// every line here comes from the resume (see src/data/profile.ts).
+const slides = [
+  {
+    text: "Awarded around US$160K at the largest buildathon in South East Asia: 2,000+ builders, 10+ enterprise partners and 500+ agentic AI projects across Asia-Pacific.",
+    title: "Winner, Founder Mode Track",
+    org: "Agentic AI Build Week, GenAI Fund",
+    href: "/work/syncnapse",
+  },
+  {
+    text: "Top 13 of 370+ global participants in an AI-for-drug-discovery challenge, with multi-task graph neural networks built at CSIRO.",
+    title: "Top 13 of 370+",
+    org: "OpenADMET ExpansionRx blind challenge",
+    href: "/work/drug-discovery-gnn",
+  },
+  {
+    text: "Member of the Golden Key International Honour Society, which recognises the top 15% of students across all disciplines.",
+    title: "Golden Key International Honour Society",
+    org: "Member",
+  },
+];
+const pad = (n: number) => String(n).padStart(2, "0");
+---
+
+<section aria-labelledby="recognition" data-tone="light" class="relative z-10 bg-bg" data-slider>
+  <div class="wrap grid-12 gap-y-10 pt-6 pb-28 md:pb-44">
+    <h2 id="recognition" class="title col-span-4 max-w-[16ch] md:col-span-5">
+      Recognition from industry, research and university communities.
+    </h2>
+
+    <div class="col-span-4 md:col-span-6 md:col-start-7">
+      <div class="flex items-center justify-between text-[16px]">
+        <p aria-live="polite"><span data-count>01</span> / {pad(slides.length)}</p>
+        <div class="flex gap-16">
+          <button type="button" data-prev class="transition-colors disabled:text-muted">Prev</button>
+          <button type="button" data-next class="transition-colors disabled:text-muted">Next</button>
+        </div>
+      </div>
+
+      <div class="relative mt-10 grid">
+        {
+          slides.map((s, i) => (
+            <figure data-slide class="col-start-1 row-start-1 transition-opacity duration-700" hidden={i !== 0}>
+              <blockquote class="font-display text-[clamp(1.75rem,2.9vw,2.75rem)] font-semibold leading-[1.08] tracking-[-0.03em]">
+                {s.text}
+              </blockquote>
+              <div class="mt-14 h-px bg-line">
+                <div class="h-[2px] -translate-y-[0.5px] bg-accent-2" style={`width:${((i + 1) / slides.length) * 100}%`} />
+              </div>
+              <figcaption class="mt-8 text-[19px]">
+                {s.href ? <a href={s.href} class="link-underline font-semibold">{s.title}</a> : <span class="font-semibold">{s.title}</span>}
+                <span class="block">{s.org}</span>
+              </figcaption>
+            </figure>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const root = document.querySelector("[data-slider]");
+  if (root) {
+    const slides = [...root.querySelectorAll<HTMLElement>("[data-slide]")];
+    const count = root.querySelector("[data-count]")!;
+    const prev = root.querySelector<HTMLButtonElement>("[data-prev]")!;
+    const next = root.querySelector<HTMLButtonElement>("[data-next]")!;
+    let index = 0;
+    const show = (i: number) => {
+      index = Math.max(0, Math.min(slides.length - 1, i));
+      slides.forEach((s, k) => (s.hidden = k !== index));
+      count.textContent = String(index + 1).padStart(2, "0");
+      prev.disabled = index === 0;
+      next.disabled = index === slides.length - 1;
+    };
+    prev.addEventListener("click", () => show(index - 1));
+    next.addEventListener("click", () => show(index + 1));
+    show(0);
+  }
+</script>

@@ -1,0 +1,173 @@
+---
+import { getCollection, render } from "astro:content";
+import { Image } from "astro:assets";
+import { boldFigures } from "@/lib/figures";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import FullBleed from "@/components/ui/FullBleed.astro";
+
+export async function getStaticPaths() {
+  const work = (await getCollection("work")).sort((a, b) => a.data.order - b.data.order);
+  return work.map((entry, i) => ({
+    params: { slug: entry.id },
+    props: { entry, next: work[(i + 1) % work.length] },
+  }));
+}
+
+const { entry, next } = Astro.props;
+const { Content } = await render(entry);
+const d = entry.data;
+const lead = d.gallery.slice(0, 2);
+const rest = d.gallery.slice(2);
+const facts = [d.context, d.year, d.tag].filter(Boolean) as string[];
+// The line beside the title: the headline result when there is one.
+const descriptor = d.metric ? `${d.metric.value} ${d.metric.label}` : undefined;
+---
+
+<BaseLayout title={d.title} description={d.summary} type="article">
+  <article class="relative">
+    {
+      d.hero ? (
+        <FullBleed src={d.hero} alt={d.heroAlt ?? ""} position="46% 43%" title={d.title} descriptor={descriptor} facts={facts} />
+      ) : (
+        // No photograph: the product screenshot opens the page, framed on paper.
+        <header class="wrap pt-[88px]">
+          <div class="grid-12 items-baseline gap-y-3">
+            <h1 class="font-display enter col-span-4 text-[clamp(2.2rem,3.6vw,3.5rem)] font-semibold leading-[1] tracking-[-0.035em] text-balance md:col-span-6" style="--i:0">
+              {d.title}
+            </h1>
+            {descriptor && <p class="enter col-span-4 max-w-[34ch] text-[16px] md:col-span-4 md:col-start-7" style="--i:1">{descriptor}</p>}
+          </div>
+          {d.cover && (
+            <div class="enter mt-10 bg-surface p-2 md:p-3" style="--i:2">
+              <Image
+                src={d.cover}
+                alt={d.coverAlt ?? ""}
+                widths={[768, 1280, 1920, 2400]}
+                sizes="100vw"
+                loading="eager"
+                fetchpriority="high"
+                class="w-full"
+              />
+            </div>
+          )}
+          <ul class="grid-12 mt-4 text-[16px]">
+            {facts.map((f) => <li class="col-span-2 md:col-span-3">{f}</li>)}
+          </ul>
+        </header>
+      )
+    }
+
+    <!-- Everything after the opening image; the result card only sticks within this block. -->
+    <div class="relative">
+    <!-- Intro and project information -->
+    <section aria-label="Project information" class="wrap pt-6 md:pt-8">
+      <p class="font-display reveal max-w-[30ch] text-[clamp(1.75rem,3vw,2.75rem)] font-semibold leading-[1.06] tracking-[-0.03em]">
+        {d.summary}
+      </p>
+      <div class="grid-12 mt-16 gap-y-6 md:mt-24">
+        <h2 class="subtitle col-span-4 md:col-span-6">Project information</h2>
+        <dl class="col-span-4 text-[16px] md:col-span-6">
+          <div class="grid grid-cols-6 gap-4 border-t border-line py-3">
+            <dt class="meta col-span-2 pt-0.5 text-muted">Context</dt>
+            <dd class="col-span-4">{d.context}</dd>
+          </div>
+          {d.year && (
+            <div class="grid grid-cols-6 gap-4 border-t border-line py-3">
+              <dt class="meta col-span-2 pt-0.5 text-muted">Year</dt>
+              <dd class="col-span-4">{d.year}</dd>
+            </div>
+          )}
+          {d.stack.length > 0 && (
+            <div class="grid grid-cols-6 gap-4 border-t border-line py-3">
+              <dt class="meta col-span-2 pt-0.5 text-muted">Stack</dt>
+              <dd class="col-span-4">{d.stack.join(", ")}</dd>
+            </div>
+          )}
+          {d.metric && (
+            <div class="grid grid-cols-6 gap-4 border-t border-line py-3">
+              <dt class="meta col-span-2 pt-0.5 text-muted">Result</dt>
+              <dd class="col-span-4"><strong class="font-bold text-accent">{d.metric.value}</strong>, <span set:html={boldFigures(d.metric.label, "font-semibold")} /></dd>
+            </div>
+          )}
+          {d.links.length > 0 && (
+            <div class="grid grid-cols-6 gap-4 border-y border-line py-3">
+              <dt class="meta col-span-2 pt-0.5 text-muted">Links</dt>
+              <dd class="col-span-4 grid gap-1">
+                {d.links.map((l) => (
+                  <a href={l.href} target="_blank" rel="noopener" class="w-fit underline decoration-1 underline-offset-[3px] hover:no-underline">
+                    {l.label} <span aria-hidden="true">&#8599;</span>
+                  </a>
+                ))}
+              </dd>
+            </div>
+          )}
+        </dl>
+      </div>
+    </section>
+
+    {
+      lead.length > 0 && (
+        <div class="wrap mt-24 grid items-start gap-2 md:mt-36 md:grid-cols-2">
+          {lead.map((g) => (
+            <figure class:list={["reveal overflow-hidden bg-surface", lead.length === 1 && "md:col-span-2"]}>
+              <Image src={g.src} alt={g.alt} widths={[600, 1000, 1400]} sizes="(min-width: 768px) 50vw, 100vw" class="w-full" />
+            </figure>
+          ))}
+        </div>
+      )
+    }
+
+    <div class="wrap mt-24 md:mt-36">
+      <div class="prose-site prose-split">
+        <Content />
+      </div>
+    </div>
+
+    {
+      rest.length > 0 && (
+        <section aria-labelledby="gallery" class="wrap mt-24 md:mt-36">
+          <h2 id="gallery" class="title">Gallery</h2>
+          <div class="mt-8 grid items-start gap-2 md:grid-cols-2">
+            {rest.map((g) => (
+              <figure class:list={["reveal overflow-hidden bg-surface", g.wide && "md:col-span-2"]}>
+                <Image src={g.src} alt={g.alt} widths={[600, 1000, 1600, 2200]} sizes={g.wide ? "100vw" : "(min-width: 768px) 50vw, 100vw"} class="w-full" />
+              </figure>
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    {
+      d.metric && (
+        // Sticks to the bottom-left corner while the case study scrolls, like PDA's KPI card.
+        <div class="pointer-events-none sticky bottom-5 z-20 mt-16 h-32">
+          <div class="wrap flex h-full items-end">
+            <p class="pointer-events-auto w-[230px] border-t-2 border-accent bg-surface p-3">
+              <span class="meta block text-muted">Result</span>
+              <span class="font-display mt-1 block text-[34px] font-bold leading-none tracking-[-0.035em] text-accent">{d.metric.value}</span>
+              <span class="mt-1 block text-[16px] leading-tight text-muted">{d.metric.label}</span>
+            </p>
+          </div>
+        </div>
+      )
+    }
+    </div>
+  </article>
+
+  <!-- Next project -->
+  <nav aria-label="Next project" class="wrap mt-16 border-t border-line pt-5 pb-28 md:mt-24 md:pb-40">
+    <a href={`/work/${next.id}`} class="group grid-12 gap-y-6">
+      <p class="meta col-span-4 text-muted md:col-span-6">Next project</p>
+      <div class="col-span-4 md:col-span-6">
+        <p class="title group-hover:underline group-hover:decoration-1 group-hover:underline-offset-4">{next.data.title}</p>
+        <p class="mt-2 max-w-[46ch] text-[16px] text-muted">{next.data.summary}</p>
+        {next.data.cover && (
+          <div class="mt-6 overflow-hidden bg-surface">
+            <Image src={next.data.cover} alt="" widths={[500, 900]} sizes="(min-width: 768px) 50vw, 100vw" class="w-full transition-transform duration-[1.2s] group-hover:scale-[1.03]" />
+          </div>
+        )}
+      </div>
+    </a>
+  </nav>
+</BaseLayout>
