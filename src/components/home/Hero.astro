@@ -42,8 +42,9 @@ const total = String(heroSlides.length).padStart(2, "0");
   }
 
   <div class="hero-content wrap relative z-[3] h-full">
-    <!-- Name left, role right: the centre column stays clear so no text sits on a face. -->
-    <h1 class="font-display grid-12 absolute inset-x-0 top-1/2 -translate-y-1/2 px-[inherit] text-[clamp(1.75rem,2.9vw,3rem)] font-semibold leading-[1.05] tracking-[-0.03em] [text-shadow:0_1px_20px_rgb(0_0_0/0.3)]">
+    <!-- Name left, role right: the centre column stays clear so no text sits on a face.
+         On phones the line sits lower, under the faces of the group photos. -->
+    <h1 class="font-display grid-12 absolute inset-x-0 top-[64%] -translate-y-1/2 px-[inherit] md:top-1/2 text-[clamp(1.75rem,2.9vw,3rem)] font-semibold leading-[1.05] tracking-[-0.03em] [text-shadow:0_1px_20px_rgb(0_0_0/0.3)]">
       <span class="enter col-span-2 md:col-span-4" style="--i:1">{w1} {w2}</span>
       <span class="enter col-span-2 text-right font-medium text-aqua md:col-span-4 md:col-start-9" style="--i:2">{w3} {w4}</span>
     </h1>

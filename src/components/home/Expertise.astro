@@ -5,11 +5,19 @@
 // leaves the list. Every note stays in place, so nothing shifts while you scroll.
 import { Image } from "astro:assets";
 import { services } from "@/data/profile";
-import { photos } from "@/data/photos";
+import agents from "@/assets/expertise/agents-rag-figure.jpg";
+import knowledge from "@/assets/expertise/knowledge.jpg";
+import requirements from "@/assets/expertise/requirements.jpg";
+import learning from "@/assets/expertise/learning.jpg";
 
-// One photo per area, in list order. The National Tribune article (landscape) needs
-// the wider column to stay readable, so the photo column is five of twelve.
-const images = [photos.aabwTeam, photos.csiroPresenting, photos.phdNews, photos.csiroPoster];
+// One photo per area, in list order, all cropped to 4:5 so the swap never changes
+// the column's height. Public-domain or CC0 photos (sources in src/assets/expertise/CREDITS.md).
+const images = [
+  { src: agents, alt: "Diagram of a multi-agent RAG compliance checker: two checker agents with retrieval, reranking, chain of thought and memory pass possible non-compliant requirements to a report analyser agent. Adapted from Das, Deb, Chaki and Cortesi, ACM TOSEM 2026" },
+  { src: knowledge, alt: "Streams of binary data fanning out into a dense grid of glowing ones and zeros" },
+  { src: requirements, alt: "Engineers in clean-room suits preparing a weather satellite for launch" },
+  { src: learning, alt: "A scientist in a lab coat holding up a model of a molecule" },
+];
 ---
 
 <section aria-labelledby="expertise" data-tone="dark" class="relative z-10 bg-band text-band-fg" data-expertise>

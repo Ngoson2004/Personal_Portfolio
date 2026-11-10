@@ -8,7 +8,7 @@ import csiroTeam from "@/assets/photos/csiro-team.jpg";
 import csiroPoster from "@/assets/photos/csiro-poster.jpg";
 import csiroLab from "@/assets/photos/csiro-lab.jpg";
 import csiroStage from "@/assets/photos/csiro-stage.jpg";
-import coast from "@/assets/photos/coast.jpg";
+import coast from "@/assets/photos/coast-portrait.jpg";
 import rowing from "@/assets/photos/rowing.jpg";
 import aquarium from "@/assets/photos/aquarium.jpg";
 import hiking from "@/assets/photos/hiking.jpg";
@@ -17,6 +17,7 @@ import piano from "@/assets/photos/piano.jpg";
 import basketball from "@/assets/photos/basketball.jpg";
 import techtok from "@/assets/photos/techtok.jpg";
 import boxing from "@/assets/photos/boxing.jpg";
+import weights from "@/assets/photos/weights.jpg";
 import graduation from "@/assets/photos/graduation.jpg";
 import aabwCrowd from "@/assets/photos/aabw-crowd.jpg";
 import aabwTeam from "@/assets/photos/aabw-team.jpg";
@@ -34,22 +35,23 @@ export const photos = {
   heroPortrait: { src: heroPortrait, alt: "Son Ngo smiling, holding a bouquet of flowers", position: "50% 7%" },
   clouds: { src: clouds, alt: "Son standing above a sea of clouds, looking out at the mountains", position: "37% 45%" },
   csiroPresenting: { src: csiroPresenting, alt: "Son presenting a workflow diagram at CSIRO alongside two supervisors", position: "46% 43%" },
-  csiroTeam: { src: csiroTeam, alt: "Son with two CSIRO supervisors outside the CSIRO laboratory", position: "50% 55%" },
+  csiroTeam: { src: csiroTeam, alt: "Son with two CSIRO supervisors outside the CSIRO laboratory", position: "50% 68%" },
   csiroPoster: { src: csiroPoster, alt: "Son beside a research poster on AI for early drug discovery", position: "50% 40%" },
   csiroLab: { src: csiroLab, alt: "Son giving a thumbs up in a CSIRO laboratory", position: "18% 0%" },
   csiroStage: { src: csiroStage, alt: "Son presenting on stage at a CSIRO conference", position: "50% 40%" },
-  coast: { src: coast, alt: "Son at a coastal lookout above the ocean", position: "51% 55%" },
+  coast: { src: coast, alt: "Son at a coastal lookout above the ocean, glancing to the side", position: "56% 53%" },
   rowing: { src: rowing, alt: "Son rowing a small boat on a river", position: "50% 40%" },
   aquarium: { src: aquarium, alt: "Son in a blue-lit aquarium tunnel watching a ray swim past", position: "50% 50%" },
-  cafeReading: { src: cafeReading, alt: "Son smiling at a cafe table with an open book and an iced coffee", position: "48% 26%" },
+  cafeReading: { src: cafeReading, alt: "Son smiling at a cafe table with an open book and an iced coffee", position: "50% 40%" },
   hiking: { src: hiking, alt: "Son walking along a forest trail", position: "50% 60%" },
-  piano: { src: piano, alt: "Son playing an upright piano", position: "60% 50%" },
+  piano: { src: piano, alt: "Son playing a grand piano in a book-lined study", position: "56% 25%" },
   basketball: { src: basketball, alt: "Son dribbling a basketball past defenders in an indoor court", position: "50% 40%" },
   techtok: { src: techtok, alt: "A group of friends posing around a cafe table at a Techtok Melbourne meetup", position: "50% 50%" },
   boxing: { src: boxing, alt: "Son training on a heavy bag at the gym", position: "50% 40%" },
+  weights: { src: weights, alt: "Son taking a mirror selfie behind a rack of 24 kg dumbbells at the gym", position: "50% 30%" },
   graduation: { src: graduation, alt: "Son on the big screen receiving a degree at the Swinburne graduation ceremony", position: "50% 50%" },
   aabwCrowd: { src: aabwCrowd, alt: "Builders gathered for the group photo at Agentic AI Build Week", position: "50% 50%" },
-  aabwTeam: { src: aabwTeam, alt: "The Syncnapse team working at their laptops during Agentic AI Build Week", position: "50% 40%" },
+  aabwTeam: { src: aabwTeam, alt: "The Syncnapse team working at their laptops during Agentic AI Build Week", position: "32% 65%" },
   aabwCelebration: { src: aabwCelebration, alt: "The Syncnapse team celebrating on a video call after the win", position: "50% 40%" },
   aabwCall: { src: aabwCall, alt: "The Syncnapse team on a video call, each with the Syncnapse logo as their background", position: "50% 50%" },
   phdLetter: { src: phdLetter, alt: "Monash University scholarship offer for a PhD in the Faculty of Information Technology, with personal details redacted", position: "50% 0%" },
@@ -59,21 +61,23 @@ export const photos = {
 
 // Home hero slideshow, every photo full bleed. The LinkedIn portrait is only 800px
 // square, so it is softer than the rest on large screens.
+// The Techtok group sits a little lower than centre so the standing row's faces clear
+// the name line; the CSIRO team photo puts the faces in the upper half of the screen.
 export const heroSlides: Photo[] = [
   photos.heroPortrait,
   photos.csiroPresenting,
-  photos.clouds,
-  photos.coast,
+  { ...photos.techtok, position: "50% 60%" },
+  photos.csiroTeam,
 ];
 
 // About page collage: life outside work.
 export const lifeCollage: Photo[] = [
   photos.csiroStage,
-  photos.piano,
   photos.rowing,
   photos.techtok,
   photos.aquarium,
   photos.hiking,
   photos.basketball,
   photos.boxing,
+  photos.weights,
 ];

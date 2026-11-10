@@ -10,7 +10,7 @@ import { boldFigures } from "@/lib/figures";
 import { photos } from "@/data/photos";
 
 const work = (await getCollection("work")).sort((a, b) => a.data.order - b.data.order);
-const band = photos.csiroLab;
+const band = photos.cafeReading;
 const firstCover = work[0]?.data.cover;
 
 // [image columns, meta columns] for desktop, cycling. Text and image share a top line.
@@ -28,7 +28,7 @@ const layouts = [
     <div class="feature-sticky relative h-[80svh] min-h-[480px]" data-tone="dark" data-feature-sticky>
       <div class="absolute inset-0" data-feature-clip>
         <div class="absolute inset-0 overflow-hidden bg-band" data-feature-frame>
-          <div class="absolute inset-0" data-feature-zoom="20% 24%">
+          <div class="absolute inset-0" data-feature-zoom="25% 30%">
             <div class="absolute inset-0" data-feature-inner>
               {
                 firstCover && (
@@ -43,21 +43,27 @@ const layouts = [
                   />
                 )
               }
-              <Image
-                src={band.src}
-                alt={band.alt}
-                widths={[768, 1280, 1920, 2400]}
-                sizes="100vw"
-                class="absolute inset-0 h-full w-full object-cover"
-                style={`object-position:${band.position}`}
-                data-feature-band
-              />
+              <!-- The photo is portrait, so it takes the left half on desktop (top 60% on
+                   phones) and is cropped only by a few percent: the face and the open
+                   book both stay whole. The title sits on the band beside it. -->
+              <div class="absolute inset-0 bg-band" data-feature-band>
+                <div class="absolute inset-x-0 top-0 h-[60%] md:inset-y-0 md:right-1/2 md:left-0 md:h-auto">
+                  <Image
+                    src={band.src}
+                    alt={band.alt}
+                    widths={[600, 900, 1200]}
+                    sizes="(min-width: 768px) 50vw, 100vw"
+                    class="h-full w-full object-cover"
+                    style={`object-position:${band.position}`}
+                  />
+                </div>
+              </div>
             </div>
           </div>
           <div aria-hidden="true" class="absolute inset-0 bg-scrim/30" data-feature-overlay></div>
-          <!-- The title takes the right half: the face is on the left of this photo. -->
-          <div class="wrap grid-12 relative h-full content-center">
-            <h2 id="work-title" class="statement col-span-4 max-w-[16ch] text-band-fg [text-shadow:0_1px_24px_rgb(0_0_0/0.25)] md:col-span-6 md:col-start-7" data-feature-title>
+          <!-- The title takes the right half, beside the photo (below it on phones). -->
+          <div class="wrap grid-12 relative h-full content-end pb-12 md:content-center md:pb-0">
+            <h2 id="work-title" class="statement col-span-4 max-w-[16ch] text-band-fg md:col-span-6 md:col-start-7" data-feature-title>
               Agents, models and systems for safety-critical work: my projects.
             </h2>
           </div>
